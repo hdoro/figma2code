@@ -1,0 +1,52 @@
+.modal {
+  position: fixed;
+  z-index: 200;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100vw - 1.875rem);
+  max-height: 95vh;
+  overflow: auto;
+  max-width: 53.75rem;
+  margin: 0;
+  border: none;
+  border-radius: 1.5625rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: inherit;
+  & h2 {
+    margin: 0 0 0.5em;
+    font-size: 1.5rem;
+  }
+  & .btn {
+    margin: 1.5em 0 0;
+  }
+}
+
+.modal__overlay {
+  position: fixed;
+  z-index: 199;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.65;
+  background: $blue-d;
+}
+
+.modal__button {
+  position: absolute;
+  top: 1rem;
+  color: $blue-d;
+  right: 1.5rem;
+  outline: none;
+  transition: 0.2s;
+  & svg {
+    width: 2rem;
+  }
+  &:hover,
+  &:focus {
+    transform: scale(1.1);
+    color: $red;
+  }
+}

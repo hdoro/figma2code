@@ -1,0 +1,15 @@
+{
+  "editor.tabSize": 2,
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 80,
+  "breadcrumbs.enabled": true,
+  "markdown.preview.breaks": true,
+  "editor.formatOnSave": true,
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#ce003c"
+  },
+  "files.associations": {
+    "*.stylelintrc": "json",
+    "*.postcss": "scss"
+  }
+}

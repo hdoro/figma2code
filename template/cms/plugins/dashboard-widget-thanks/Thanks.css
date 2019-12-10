@@ -1,0 +1,37 @@
+@import 'part:@sanity/base/theme/variables-style';
+
+.container {
+  composes: container from 'part:@sanity/dashboard/widget-styles';
+}
+
+.header {
+  composes: header from 'part:@sanity/dashboard/widget-styles';
+}
+
+.title {
+  composes: title from 'part:@sanity/dashboard/widget-styles';
+}
+
+.title svg {
+  width: 1em;
+  vertical-align: sub;
+}
+
+.content {
+  composes: content from 'part:@sanity/dashboard/widget-styles';
+  border-top: 1px solid var(--hairline-color);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content > div {
+  max-width: 30rem;
+}
+
+.content svg {
+  width: 6rem;
+  flex: 0 0 6rem;
+  margin-right: 2rem;
+}

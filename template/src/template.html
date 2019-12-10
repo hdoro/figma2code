@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    %sapper.base%
+
+    <!-- Sapper generates a <style> tag containing critical CSS
+	     for the current page. CSS for the rest of the app is
+	     lazily loaded when it precaches secondary pages -->
+    %sapper.styles%
+
+    <!-- This contains the contents of the <svelte:head> component, if
+	     the current page has one -->
+    %sapper.head%
+  </head>
+  <body>
+    <!-- The application will be rendered inside this element,
+      because `src/client.js` references it -->
+    <div id="sapper">%sapper.html%</div>
+    <script src="/scripts.js"></script>
+    <!-- %sapper.scripts% -->
+  </body>
+</html>

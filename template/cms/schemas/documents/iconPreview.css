@@ -1,0 +1,16 @@
+.icon-preview {
+  color: var(--brand-primary);
+}
+
+a[class^='PaneItem_linkIsSelected'] .icon-preview,
+a[class*='PaneItem_linkIsSelected'] .icon-preview {
+  color: white;
+}
+
+.icon-preview svg {
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+  max-height: 75%;
+  overflow: visible;
+}

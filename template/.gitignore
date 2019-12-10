@@ -1,0 +1,16 @@
+# General
+!.gitkeep
+node_modules
+.env
+
+# Implementation-wise
+dist
+build
+public
+cms/schemas/componentsPreview.js
+cms/schemas/componentsPreview.css
+.data
+__sapper__
+static/scripts.js
+static/preview.js.map
+static/preview.js

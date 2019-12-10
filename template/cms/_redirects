@@ -1,0 +1,3 @@
+# CMS's front end SPA redirection
+# (always serving the index.html file, no matter the route)
+/* /index.html 200

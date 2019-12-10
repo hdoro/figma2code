@@ -1,0 +1,121 @@
+.blog__header {
+  padding-bottom: 1.5rem;
+  border-bottom: 3px solid $card-bg;
+  margin-bottom: 2.5rem;
+  & svg {
+    width: 1em;
+    color: $purple;
+  }
+  & > p {
+    font-size: 1.25rem;
+  }
+}
+
+.blog__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 1rem;
+  gap: 1rem;
+}
+@media $tabletUp {
+  .blog__container {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+.blog__preview {
+  background: $card-bg;
+  position: relative;
+  padding: 2.5rem 1.75rem;
+  max-width: 37rem;
+  & h2 {
+    font-size: 1.35rem;
+    color: $text-alt;
+    line-height: 1.4;
+  }
+  & > a {
+    color: $purple;
+    font-weight: 700;
+    font-family: $family-heading;
+    filter: brightness(1.3);
+    transition: 0.2s;
+    &:hover {
+      filter: none;
+    }
+    & svg {
+      width: 1em;
+      vertical-align: middle;
+      fill: currentColor;
+      margin-right: 0.5em;
+    }
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background: linear-gradient(
+      278.55deg,
+      $page-bg 54.44%,
+      rgba(69, 81, 180, 0) 87.87%
+    );
+    transition: 0.2s;
+    box-shadow: -10px 10px 20px rgba(0, 0, 0, 0.25);
+  }
+  &:hover {
+    &::after {
+      background: linear-gradient(
+        278.55deg,
+        #4551b4 54.45%,
+        rgba(69, 81, 180, 0.46) 87.87%
+      );
+    }
+  }
+}
+
+.blog__cat {
+  font-size: 1.15rem;
+}
+
+.blog__date {
+  margin: 0.25rem 0 1rem;
+}
+
+.pagination {
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination__btn {
+  color: $text;
+  transition: 0.2s;
+  &:hover {
+    color: $text-alt;
+    transform: translateX(5%);
+  }
+  & svg {
+    width: 1em;
+    fill: currentColor;
+  }
+}
+.pagination__btn_prev {
+  &:hover {
+    transform: translateX(-5%);
+  }
+  & svg {
+    transform: rotate(180deg);
+  }
+}
+
+.pagination__num {
+  margin: 0 1em;
+}
+div.pagination__num {
+  color: white;
+  font-weight: bold;
+}

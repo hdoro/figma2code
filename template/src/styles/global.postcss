@@ -1,0 +1,172 @@
+:root {
+  font-family: $family-body;
+  line-height: $line-height;
+  font-size: $base-size;
+  color: $text;
+}
+
+.no-scroll,
+.no-scroll body {
+  overflow-y: hidden;
+}
+
+@media $desktopUp {
+  :root {
+    font-size: calc($base-size + 0.05vw);
+  }
+}
+
+@media (min-width: 2500px) {
+  :root {
+    font-size: calc($base-size + 0.15vw);
+  }
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+::selection {
+  background: $primary;
+  color: black;
+}
+
+body {
+  line-height: $line-height;
+  margin: 0;
+  min-height: 100%;
+  box-sizing: border-box;
+  background: $page-bg;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+h1, h2, h3, h4,
+.f-heading {
+  font-family: $family-heading;
+  font-weight: $weight-heading;
+}
+
+h1 {
+  font-size: 7.5rem;
+}
+
+h2 {
+  font-size: 6rem;
+}
+
+h3 {
+  font-size: 5rem;
+}
+
+h4, body {
+  font-size: 4rem;
+}
+
+@media $largeUp {
+  h1 {
+    font-size: 3.4rem;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+p {
+  & a {
+    color: $primary;
+    text-decoration: underline;
+  }
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+li {
+  margin: 0 0 1em;
+}
+
+img {
+  max-width: 100%;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.text_center {
+  text-align: center;
+}
+
+.section {
+  margin-right: auto;
+  margin-left: auto;
+  padding: 20rem 4rem;
+}
+
+.section_sm {
+  max-width: $container-sm;
+}
+
+.section_md {
+  max-width: $container-md;
+}
+
+.section_lg {
+  max-width: $container-lg;
+}
+
+button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.btn {
+  background: $primary;
+  padding: 0.75em 1.75em;
+  display: inline-block;
+  min-width: 15em;
+  position: relative;
+  text-decoration: none;
+  font-weight: $weight-heading;
+  text-align: center;
+  letter-spacing: 0.05em;
+  color: white;
+  font-size: 1.15em;
+  transition: $t;
+  &:hover,
+  &:focus {
+    transform: translateY(-5%);
+  }
+}
+
+.btn_alt {
+  background: $primary;
+}
+
+.btn_sm {
+  padding: 0.35em 1.25em;
+  min-width: 0;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "cms",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "copy:redirects": "copyfiles _redirects dist",
+    "start": "sanity start",
+    "build": "sanity build"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "dependencies": {
+    "@sanity/base": "^0.144.1",
+    "@sanity/components": "^0.144.2",
+    "@sanity/core": "^0.144.0",
+    "@sanity/dashboard": "^0.144.1",
+    "@sanity/default-layout": "^0.144.2",
+    "@sanity/default-login": "^0.144.0",
+    "@sanity/desk-tool": "^0.144.2",
+    "@sanity/production-preview": "^0.144.0",
+    "@sanity/vision": "^0.144.2",
+    "prop-types": "^15.6",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-icons": "^3.8.0",
+    "react-svelte": "^1.0.2",
+    "sanity-plugin-dashboard-widget-document-list": "^0.0.8",
+    "sanity-plugin-markdown": "^1.0.1"
+  },
+  "devDependencies": {
+    "@sanity/cli": "^0.144.0",
+    "copyfiles": "^2.1.1"
+  }
+}
