@@ -69,7 +69,7 @@ function getField(c) {
 }
 
 const prepareFields = c => {
-  const fields = c.children.map(getField);
+  const fields = c.children.map(getField).flat();
   const str = JSON.stringify(fields);
   // @TODO: remove commas from the validation rule
   // const regex = new RegExp(VALIDATION_DEFAULT, 'gim')

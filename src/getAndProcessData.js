@@ -102,7 +102,7 @@ function processData(data) {
   return objects;
 }
 
-async function getData({ token, fileKey, ids, useCache }, files) {
+async function getData({ token, fileKey, ids, useCache, cacheData }, files) {
   if (useCache) {
     try {
       const data = jsonfile.readFileSync("./data/cached.json");
@@ -118,7 +118,7 @@ async function getData({ token, fileKey, ids, useCache }, files) {
   const { data } = await axios.get(endpoint, {
     headers: { "X-Figma-Token": token }
   });
-  if (useCache) {
+  if (cacheData) {
     // Cache response
     jsonfile.writeFileSync("./data/cached.json", data, {
       spaces: 2,

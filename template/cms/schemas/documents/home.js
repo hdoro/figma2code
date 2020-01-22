@@ -5,7 +5,7 @@ export default {
   type: 'document',
   title: 'Página Inicial',
   icon: FiHome,
-  __experimental_actions: ['update'],
+  __experimental_actions: ['update', 'publish'],
   fields: [
     {
       name: 'meta',

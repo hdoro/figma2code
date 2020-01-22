@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "dotenv": "^8.2.0",
+    "figma-transformer": "^1.0.0",
     "groq-js": "^0.1.4",
     "jsonfile": "^5.0.0",
     "metalsmith": "^2.3.0",

@@ -2,7 +2,7 @@ export default {
   name: 'config',
   title: 'Configurações gerais',
   type: 'document',
-  __experimental_actions: ['update'],
+  __experimental_actions: ['update', 'publish'],
   fields: [
     {
       name: 'scripts',

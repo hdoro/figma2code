@@ -8,7 +8,8 @@ const config = {
   token: process.env.FIGMA_TOKEN,
   fileKey: process.env.FIGMA_FILE_KEY,
   ids: process.env.FIGMA_IDS,
-  useCache: true
+  useCache: false,
+  cacheData: true,
 };
 
 metalsmith(__dirname)
