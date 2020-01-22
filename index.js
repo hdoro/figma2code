@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const getAndProcessData = require("./src/getAndProcessData");
 const createComponents = require("./src/components/createComponents");
+const createStyleVariables = require("./src/styles/createStyleVariables");
 
 const config = {
   token: process.env.FIGMA_TOKEN,
@@ -18,6 +19,7 @@ metalsmith(__dirname)
   .metadata(config)
   .clean(true)
   .use(getAndProcessData)
+  .use(createStyleVariables)
   // .use(createComponents)
   // Cleaning files that shouldn't go to output
   .use(function(files, metalsmith, done) {

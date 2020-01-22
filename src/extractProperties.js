@@ -53,11 +53,17 @@ exports.mergeStyles = function(node, currStyles) {
   for (const type of Object.keys(node.styles)) {
     const id = node.styles[type];
     const newStyle = currStyles[id] || {};
-    if (["fill", "stroke", "effect", "background"].indexOf(type) > -1) {
-      newStyle[type + "s"] = node[type + "s"];
-      // console.log(type + 's', newStyle, Object.keys(newStyle), '\n\n\n')
-      // console.log(type + 's', node[type + 's'], Object.keys(node), '\n\n\n')
-    } else if (type === "text") {
+    /*
+      Fill, stroke and background styles always refer to color styles/variables, which are of styleType === 'FILL'. Hence, add a `fills` array to them according to the value of the corresponding key inside the node.
+    */
+    if (["fill", "stroke", "background"].indexOf(type) > -1) {
+      const nodeKey = type === 'background' ? type : type + 's'
+      newStyle.fills = node[nodeKey];
+    }
+     else if (type === "effect") {
+       newStyle.effect = node.effects
+     }
+     else if (type === "text") {
       /*
         The 3 unused properties are the ones that are independent of text styles and can be overwritten on a layer-basis, so we dump them here and prevent them from entering our newStyle.style object
       */

@@ -1,97 +1,7 @@
 const axios = require("axios");
 const jsonfile = require("jsonfile");
 
-const { capitalize, camelCase, camelToHyphen } = require("./utils");
-const { KNOWN_IMPORTABLES } = require("./config");
 const { mergeStyles } = require("./extractProperties");
-
-function processChild(child, componentName) {
-  const newChild = JSON.parse(JSON.stringify(child));
-  const { name } = newChild;
-  if (!name) {
-    return child;
-  }
-
-  /* In order to get classes right in any nesting level, we define the parent name as the parent's parent name or, if it doesn't exist (meaning it's the first parent), its name */
-
-  if (child.children) {
-    newChild.children = newChild.children
-      .map(c => processChild(c, componentName))
-      .reverse();
-  }
-
-  // {tagName}
-  const tagName = name.match(/({.*})/gi);
-  if (tagName && tagName[0]) {
-    newChild._tagName = tagName[0].replace(/[{}]/g, "").trim();
-  }
-  // [cmsType]
-  const cmsType = name.match(/(\[.*\])/gi);
-  if (cmsType && cmsType[0]) {
-    newChild._cmsType = cmsType[0].replace(/[\[\]]/g, "").trim();
-  }
-  // (propName)
-  const propName = name.match(/(\(.*\))/gi);
-  if (propName && propName[0]) {
-    newChild._propName = propName[0].replace(/[\(\)]/g, "").trim();
-  }
-
-  // Required props are set by *. Ex: (title){h2}*
-  if (name.includes("*")) {
-    newChild._isRequired = true;
-  }
-
-  const knownImportable = KNOWN_IMPORTABLES[newChild._cmsType];
-  if (!newChild._tagName && !!knownImportable) {
-    newChild._importable = knownImportable;
-  }
-
-  // If we have the parent component's name _and_ the propName,
-  // add a className to the child using BEM (component__childPropName)
-  if (newChild._propName && componentName) {
-    newChild._className = camelToHyphen(
-      `${camelCase(componentName)}__${newChild._propName}`
-    );
-  }
-  return newChild;
-}
-
-function processFrame(f) {
-  const frameObj = {
-    _id: f.id,
-    name: f.name,
-    _type: "frame"
-  };
-  return [
-    frameObj,
-    // Components
-    ...f.children
-      .filter(c => c.type === "COMPONENT")
-      .map(({ id, type, children, ...c }) => ({
-        _id: id,
-        _type: type.toLowerCase(),
-        nameCap: capitalize(c.name),
-        nameCamel: camelCase(c.name),
-        children: children.map(child => processChild(child, c.name)).reverse(),
-        ...c
-      }))
-  ];
-}
-
-const defaultComponent = {
-  fills: [],
-  strokes: [],
-  children: []
-};
-
-// Things that change between component instances
-// - absoluteBoundingBox => I can get the width here
-function incrementComponent(toBeAdded, curr = {}) {
-  const newComp = {
-    ...curr,
-    strokes: toBeAdded.strokes
-  };
-}
 
 function processNode(node) {
   const { children, styles, componentId, type } = node;
@@ -109,13 +19,11 @@ function processNode(node) {
       used.components[componentId] || {},
       { used: true }
     );
-    // console.log(Object.keys(used.components), componentId, "\nInstance\n\n\n");
   }
 
   // We only care about properties from the master component,
   // instances only tell if it's being used or not
   if (type === "COMPONENT") {
-    // console.log(used.components[node.id])
     // Ignored properties from the component
     const {
       background,
@@ -137,11 +45,11 @@ function processNode(node) {
       type,
       ...usefulProperties
     });
-    // console.log(Object.keys(used.components), node.id, "\nComponent\n\n\n");
   }
 
   // Process children nodes
   if (Array.isArray(children) && children.length) {
+    // Merge the parent's used styles & components with the children's
     children.forEach(child => {
       const usedByChild = processNode(child);
       for (const id in usedByChild.components) {
@@ -150,11 +58,12 @@ function processNode(node) {
           usedByChild.components[id]
         );
       }
-      // Merge the parent's used styles & components with the children's
-      used.styles = {
-        ...used.styles,
-        ...usedByChild.styles
-      };
+      for (const id in usedByChild.styles) {
+        used.styles[id] = Object.assign(
+          used.styles[id] || {},
+          usedByChild.styles[id]
+        );
+      }
     });
   }
 
@@ -172,6 +81,7 @@ function processData(data) {
     styles: {}
   };
 
+  // Merge the parent's used styles & components with the children's
   data.document.children.forEach(child => {
     const usedByChild = processNode(child);
     for (const id in usedByChild.components) {
@@ -180,11 +90,12 @@ function processData(data) {
         usedByChild.components[id]
       );
     }
-    // Merge the parent's used styles & components with the children's
-    used.styles = {
-      ...used.styles,
-      ...usedByChild.styles
-    };
+    for (const id in usedByChild.styles) {
+      used.styles[id] = Object.assign(
+        used.styles[id] || {},
+        usedByChild.styles[id]
+      );
+    }
   });
 
   for (const id in data.components) {
@@ -208,15 +119,21 @@ function processData(data) {
   }
 
   for (const id in data.styles) {
-    if (
-      !used.styles.hasOwnProperty(id) ||
-      data.styles[id].styleType === "GRID"
-    ) {
+    const dataStyle = data.styles[id];
+    const usedStyle = used.styles[id];
+    if (!usedStyle || dataStyle.styleType === "GRID") {
       delete data.styles[id];
+    } else if (
+      dataStyle.styleType === "FILL" &&
+      (!usedStyle.fills ||
+      !usedStyle.fills.length)
+    ) {
+      console.warn(`Fill style ${dataStyle.name} (${id}) has no fills!`);
+      delete data.styles[id]
     } else {
       data.styles[id] = {
-        ...data.styles[id],
-        ...used.styles[id]
+        ...dataStyle,
+        ...usedStyle
       };
     }
   }
@@ -264,10 +181,12 @@ async function getData({ token, fileKey, canvases, useCache, cacheData }) {
 async function getAndProcessData(files, metalsmith, done) {
   const data = await getData(metalsmith._metadata);
   const processed = processData(data);
+
   files.data = data;
   files["processed.json"] = {
     contents: Buffer.from(JSON.stringify(processed, null, 2))
   };
+
   done();
 }
 
