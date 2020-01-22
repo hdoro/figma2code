@@ -81,6 +81,11 @@ function processData(data) {
     styles: {}
   };
 
+  // Make style names CSS friendly
+  for (const key in data.styles) {
+    data.styles[key].name = data.styles[key].name.toLowerCase().replace(/[\/\s]/g, '-')
+  }
+
   // Merge the parent's used styles & components with the children's
   data.document.children.forEach(child => {
     const usedByChild = processNode(child);
