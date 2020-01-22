@@ -7,8 +7,8 @@ const createComponents = require("./src/components/createComponents");
 const config = {
   token: process.env.FIGMA_TOKEN,
   fileKey: process.env.FIGMA_FILE_KEY,
-  ids: process.env.FIGMA_IDS,
-  useCache: false,
+  canvases: 'Components,Desktop',
+  useCache: true,
   cacheData: true,
 };
 
@@ -18,7 +18,7 @@ metalsmith(__dirname)
   .metadata(config)
   .clean(true)
   .use(getAndProcessData)
-  .use(createComponents)
+  // .use(createComponents)
   // Cleaning files that shouldn't go to output
   .use(function(files, metalsmith, done) {
     delete files.data

@@ -8,3 +8,4 @@
   - `{tagName}`
   - `(propName)`
   - `[cmsType.subType]`
+- `icons` page is huge and crashes the process, remove it before converting the design
