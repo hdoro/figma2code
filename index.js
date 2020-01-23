@@ -1,11 +1,12 @@
-const metalsmith = require("metalsmith");
-require("dotenv").config();
+const metalsmith = require('metalsmith')
+const { readFileSync } = require('fs')
+require('dotenv').config()
 
-const getData = require("./src/getData/getData");
-const processData = require("./src/processData/processData");
+const getData = require('./src/getData/getData')
+const processData = require('./src/processData/processData')
 // const createComponents = require("./src/components/createComponents");
-const createStyleVariables = require("./src/styles/createStyleVariables");
-const processTemplate = require("./src/processTemplate/processTemplate");
+const createStyleVariables = require('./src/styles/createStyleVariables')
+const processTemplate = require('./src/processTemplate/processTemplate')
 
 const config = {
   token: process.env.FIGMA_TOKEN,
@@ -17,18 +18,24 @@ const config = {
   sanityID: 'Sanity ID here',
   brandPrimary: '#ce003c',
   siteUrl: 'https://enactusufmg.com.br'
-};
+}
+
+function includeConfigs(files, _metalsmith, done) {
+  const configFiles = ['./.stylelintrc', './.prettierrc', './.eslintrc.js']
+  for (const path of configFiles) {
+    files[path] = {
+      contents: Buffer.from(readFileSync(path))
+    }
+  }
+  done()
+}
 
 metalsmith(__dirname)
-  .source("template")
-  .destination("output")
+  .source('template')
+  .destination('output')
   .metadata(config)
-  .path([
-    './.stylelintrc',
-    './.prettierrc',
-    './eslintrc.js',
-  ])
   .clean(true)
+  .use(includeConfigs)
   .use(getData)
   .use(processData)
   .use(createStyleVariables)
@@ -41,8 +48,8 @@ metalsmith(__dirname)
     delete files['cached.json']
     // delete files['processed.json']
     // console.log(files, metalsmith);
-    done();
+    done()
   })
   .build(function(err) {
-    if (err) throw err;
-  });
+    if (err) throw err
+  })

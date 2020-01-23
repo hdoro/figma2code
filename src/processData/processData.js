@@ -80,9 +80,11 @@ function process(data) {
 
   // Make style names CSS friendly
   for (const key in data.styles) {
-    data.styles[key].name = data.styles[key].name
+    // @TODO: remove duplicate hyphens (24px---bold--h3, for ex.)
+    const spacelessName = data.styles[key].name
       .toLowerCase()
       .replace(/[\/\s]/g, "-");
+    data.styles[key].name = typeof parseInt(spacelessName[0]) === 'number' ? 's_' + spacelessName : spacelessName
   }
 
   // Merge the parent's used styles & components with the children's
