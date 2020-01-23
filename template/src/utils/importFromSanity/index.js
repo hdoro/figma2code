@@ -8,7 +8,7 @@ const client = sanityClient({
   dataset: 'production',
   // Can't import projectId from src/utils/config.js as this file requires
   // CommonJS modules and config is set as ES6 imports
-  projectId: 'q25kg0j9',
+  projectId: '%SANITY_ID%',
   useCdn: true
 })
 

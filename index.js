@@ -13,7 +13,10 @@ const config = {
   canvases: 'Components,Desktop',
   useCache: true,
   cacheData: true,
-  siteTitle: 'Site da Enactus'
+  siteName: 'Site da Enactus',
+  sanityID: 'Sanity ID here',
+  brandPrimary: '#ce003c',
+  siteUrl: 'https://enactusufmg.com.br'
 };
 
 metalsmith(__dirname)
@@ -24,8 +27,9 @@ metalsmith(__dirname)
   .use(getData)
   .use(processData)
   .use(createStyleVariables)
-  .use(processTemplate)
   // .use(createComponents)
+  // .use(createCmsSchema)
+  .use(processTemplate)
   // Cleaning files that shouldn't go to output
   .use(function(files, metalsmith, done) {
     delete files.data

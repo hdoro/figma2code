@@ -6,7 +6,7 @@
   "markdown.preview.breaks": true,
   "editor.formatOnSave": true,
   "workbench.colorCustomizations": {
-    "statusBar.background": "#ce003c"
+    "statusBar.background": "%BRAND_PRIMARY%"
   },
   "files.associations": {
     "*.stylelintrc": "json",

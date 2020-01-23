@@ -1,5 +1,3 @@
 :root {
-  --brand-primary: #747ed8;
-  /* --text-color: #0d1372;
-  --main-navigation-color: hsla(236, 80%, 25%, 0.9); */
+  --brand-primary: %BRAND_PRIMARY%;
 }

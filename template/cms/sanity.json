@@ -1,10 +1,10 @@
 {
   "root": true,
   "project": {
-    "name": "Plexi - edição de conteúdo"
+    "name": "%SITE_NAME%"
   },
   "api": {
-    "projectId": "q25kg0j9",
+    "projectId": "%SANITY_ID%",
     "dataset": "production"
   },
   "plugins": [

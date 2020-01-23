@@ -18,7 +18,10 @@
     - `canvases`: a list (comma separated) of canvases to include in the conversion
     - `useCache`: use `false` if you always need fresh data
     - `cacheData`: whether to save a cache file for inspection and speed or not. Defaults to `true`
-    - `siteTitle`: the name of the site / project to be injected in the template
+    - `siteName`: the name of the site / project to be injected in the template
+    - `siteUrl`
+    - `brandPrimary`: a css color for the primary color of the brand. Used to customize VS Code & the CMS
+    - `sanityID`: the Sanity project's ID
   - @TODO: create a CLI to avoid having to depend on .env
 1. Start from a `template` folder with all the base project structure and regular files
 1. Fetch a whole file's data from Figma's API
