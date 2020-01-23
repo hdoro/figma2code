@@ -1,6 +1,7 @@
 <script>
   import Header from '../components/Header/Header.svelte'
   import Footer from '../components/Footer/Footer.svelte'
+  import '../styles/404.standalone.sass'
 
   export let status
   export let error
@@ -8,14 +9,12 @@
   const dev = process.env.NODE_ENV === 'development'
 </script>
 
-<style src="../styles/404.postcss" global>
-
-</style>
-
 <svelte:head>
   <meta name="robots" content="noindex nofollow" />
   <title>Página não encontrada</title>
+  <link rel="stylesheet" href="/styles/404.css">
 </svelte:head>
+
 <Header />
 
 <main class="err-pg">

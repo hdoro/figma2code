@@ -1,0 +1,80 @@
+// Every theme token should come in here!
+// ==============
+
+$base-size: 4px
+
+// %START_AUTO_GENERATION%
+
+// %END_AUTO_GENERATION%
+
+// Structure
+$container-lg: (1200px / $base-size)rem
+$container-md: (900px / $base-size)rem
+$container-sm: (900px / $base-size)rem
+
+// Transitions
+$t-timing: ease-out
+$t-dur: .2s
+$t-default: $t-dur $t-timing
+$t: $t-default
+$t-fast: $t-dur * 0.5 $t-timing
+$t-slow: $t-dur * 3 $t-timing
+
+// Function & utils
+@function getRem($sizes...)
+  $values: ''
+  @each $px in $sizes
+    $values: #{$values #{$px / $base-size}rem}
+  @return $values
+  
+// Media queries
+$phone: 'max-width: 467px'
+$noteUp: 'min-width: 468px'
+$smThanTablet: 'max-width: 767px'
+$tabletUp: 'min-width: 768px'
+$smThanLarge: 'max-width: 939px'
+$largeUp: 'min-width: 940px'
+$smThanLaptop: 'max-width: 1365px'
+$laptopUp: 'min-width: 1366px'
+$smThanDesktop: 'max-width: 1919px'
+$desktopUp: 'min-width: 1920px'
+
+@mixin phone
+  @media ($phone)
+    @content
+
+@mixin noteUp
+  @media ($noteUp)
+    @content
+
+@mixin smThanTablet
+  @media ($smThanTablet)
+    @content
+
+@mixin tabletUp
+  @media ($tabletUp)
+    @content
+
+@mixin smThanLarge
+  @media ($smThanLarge)
+    @content
+
+@mixin largeUp
+  @media ($largeUp)
+    @content
+
+@mixin smThanLaptop
+  @media ($smThanLaptop)
+    @content
+
+@mixin laptopUp
+  @media ($laptopUp)
+    @content
+
+@mixin smThanDesktop
+  @media ($smThanDesktop)
+    @content
+
+@mixin desktopUp
+  @media ($desktopUp)
+    @content

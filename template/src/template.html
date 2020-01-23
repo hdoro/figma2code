@@ -3,13 +3,12 @@
   <head>
     %sapper.base%
 
-    <!-- Sapper generates a <style> tag containing critical CSS
-	     for the current page. CSS for the rest of the app is
-	     lazily loaded when it precaches secondary pages -->
+    <link rel="stylesheet" href="/styles/global.css">
+    <!--
+      Styles created directly inside svelte components will be pasted here
+    -->
     %sapper.styles%
 
-    <!-- This contains the contents of the <svelte:head> component, if
-	     the current page has one -->
     %sapper.head%
   </head>
   <body>
@@ -17,6 +16,7 @@
       because `src/client.js` references it -->
     <div id="sapper">%sapper.html%</div>
     <script src="/scripts.js"></script>
+    <!--  UNCOMMENT BELOW IF YOU WANT A DYNAMIC CLIENT-SIDE  */}} -->
     <!-- %sapper.scripts% -->
   </body>
 </html>

@@ -5,6 +5,8 @@ import { terser } from 'rollup-plugin-terser'
 import resolve from 'rollup-plugin-node-resolve'
 import svelte from 'rollup-plugin-svelte'
 
+import babelConfig from './babelConfig'
+
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
 
@@ -20,28 +22,7 @@ const scriptsJs = {
   plugins: [
     commonjs(),
 
-    babel({
-      extensions: ['.js', '.mjs'],
-      runtimeHelpers: true,
-      exclude: ['node_modules/@babel/**'],
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            targets: '> 0.25%, not dead'
-          }
-        ]
-      ],
-      plugins: [
-        '@babel/plugin-syntax-dynamic-import',
-        [
-          '@babel/plugin-transform-runtime',
-          {
-            useESModules: true
-          }
-        ]
-      ]
-    }),
+    babel(babelConfig),
 
     !dev &&
       terser({
@@ -74,28 +55,7 @@ const previewSvelte = {
     }),
     commonjs(),
 
-    babel({
-      extensions: ['.js', '.mjs', '.html', '.svelte'],
-      runtimeHelpers: true,
-      exclude: ['node_modules/@babel/**'],
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            targets: '> 0.25%, not dead'
-          }
-        ]
-      ],
-      plugins: [
-        '@babel/plugin-syntax-dynamic-import',
-        [
-          '@babel/plugin-transform-runtime',
-          {
-            useESModules: true
-          }
-        ]
-      ]
-    }),
+    babel(babelConfig),
 
     !dev &&
       terser({

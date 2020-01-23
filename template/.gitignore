@@ -14,3 +14,4 @@ __sapper__
 static/scripts.js
 static/preview.js.map
 static/preview.js
+static/styles/*.css
