@@ -1,6 +1,3 @@
-const axios = require("axios");
-const jsonfile = require("jsonfile");
-
 const { mergeStyles } = require("./extractProperties");
 
 function processNode(node) {
@@ -75,7 +72,7 @@ function processNode(node) {
   return used;
 }
 
-function processData(data) {
+function process(data) {
   let used = {
     components: {},
     styles: {}
@@ -83,7 +80,9 @@ function processData(data) {
 
   // Make style names CSS friendly
   for (const key in data.styles) {
-    data.styles[key].name = data.styles[key].name.toLowerCase().replace(/[\/\s]/g, '-')
+    data.styles[key].name = data.styles[key].name
+      .toLowerCase()
+      .replace(/[\/\s]/g, "-");
   }
 
   // Merge the parent's used styles & components with the children's
@@ -130,11 +129,10 @@ function processData(data) {
       delete data.styles[id];
     } else if (
       dataStyle.styleType === "FILL" &&
-      (!usedStyle.fills ||
-      !usedStyle.fills.length)
+      (!usedStyle.fills || !usedStyle.fills.length)
     ) {
       console.warn(`Fill style ${dataStyle.name} (${id}) has no fills!`);
-      delete data.styles[id]
+      delete data.styles[id];
     } else {
       data.styles[id] = {
         ...dataStyle,
@@ -146,53 +144,13 @@ function processData(data) {
   return data;
 }
 
-async function getData({ token, fileKey, canvases, useCache, cacheData }) {
-  if (useCache) {
-    try {
-      const data = jsonfile.readFileSync("./data/cached.json");
-      return data;
-    } catch (error) {
-      console.error(`Couldn't get cached file: ${error}`);
-      console.info("Will try to fetch from Figma's API");
-    }
-  }
+module.exports = async function processDataStep(files, _metalsmith, done) {
+  const data = files.data;
+  const processed = process(data);
 
-  const BASE_URL = "https://api.figma.com/v1/files";
-  const endpoint = `${BASE_URL}/${fileKey}`;
-  console.time("Fetching from Figma");
-  const { data } = await axios.get(endpoint, {
-    headers: { "X-Figma-Token": token }
-  });
-
-  const canvasArray = canvases.split(",");
-  // Remove unused pages from the data to make it smaller
-  data.document.children = data.document.children.filter(canvas => {
-    return canvasArray ? canvasArray.indexOf(canvas.name) >= 0 : true;
-  });
-  console.timeEnd("Fetching from Figma");
-
-  if (cacheData) {
-    // Cache response
-    console.time("Caching data");
-    jsonfile.writeFileSync("./data/cached.json", data, {
-      spaces: 2,
-      encoding: "utf-8"
-    });
-    console.timeEnd("Caching data");
-  }
-  return data;
-}
-
-async function getAndProcessData(files, metalsmith, done) {
-  const data = await getData(metalsmith._metadata);
-  const processed = processData(data);
-
-  files.data = data;
   files["processed.json"] = {
     contents: Buffer.from(JSON.stringify(processed, null, 2))
   };
 
   done();
-}
-
-module.exports = getAndProcessData;
+};

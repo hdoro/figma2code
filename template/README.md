@@ -1,1 +1,1 @@
-# SITE_NAME
+# %SITE_NAME%

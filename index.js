@@ -1,9 +1,11 @@
 const metalsmith = require("metalsmith");
 require("dotenv").config();
 
-const getAndProcessData = require("./src/getAndProcessData");
-const createComponents = require("./src/components/createComponents");
+const getData = require("./src/getData/getData");
+const processData = require("./src/processData/processData");
+// const createComponents = require("./src/components/createComponents");
 const createStyleVariables = require("./src/styles/createStyleVariables");
+const processTemplate = require("./src/processTemplate/processTemplate");
 
 const config = {
   token: process.env.FIGMA_TOKEN,
@@ -11,6 +13,7 @@ const config = {
   canvases: 'Components,Desktop',
   useCache: true,
   cacheData: true,
+  siteTitle: 'Site da Enactus'
 };
 
 metalsmith(__dirname)
@@ -18,8 +21,10 @@ metalsmith(__dirname)
   .destination("output")
   .metadata(config)
   .clean(true)
-  .use(getAndProcessData)
+  .use(getData)
+  .use(processData)
   .use(createStyleVariables)
+  .use(processTemplate)
   // .use(createComponents)
   // Cleaning files that shouldn't go to output
   .use(function(files, metalsmith, done) {
