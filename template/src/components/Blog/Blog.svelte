@@ -7,6 +7,8 @@
   import SEOHead from '../Head/SEOHead.svelte'
   import Pagination from './Pagination.svelte'
 
+  import './blog.standalone.sass'
+
   import { toPlainText } from '../../utils/portableText'
   import { PAGINATION_SIZE } from '../../utils/config'
 
@@ -23,11 +25,11 @@
   $: pageCount = data.pageCount || 1
 </script>
 
-<style src="./blog.postcss" global>
-
-</style>
-
 <SEOHead meta={info} {config} {scripts} />
+
+<svelte:head>
+  <link rel="stylesheet" href="/styles/blog.css">
+</svelte:head>
 
 <Header links={config.headerLinks} />
 <main class="section section_lg">

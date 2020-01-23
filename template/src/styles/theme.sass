@@ -7,10 +7,17 @@ $base-size: 4px
 
 // %END_AUTO_GENERATION%
 
+// Function & utils
+@function getRem($sizes...)
+  $values: ''
+  @each $px in $sizes
+    $values: #{$values #{$px / $base-size}rem}
+  @return $values
+
 // Structure
-$container-lg: (1200px / $base-size)rem
-$container-md: (900px / $base-size)rem
-$container-sm: (900px / $base-size)rem
+$container-lg: getRem(1200px)
+$container-md: getRem(900px)
+$container-sm: getRem(600px)
 
 // Transitions
 $t-timing: ease-out
@@ -20,13 +27,6 @@ $t: $t-default
 $t-fast: $t-dur * 0.5 $t-timing
 $t-slow: $t-dur * 3 $t-timing
 
-// Function & utils
-@function getRem($sizes...)
-  $values: ''
-  @each $px in $sizes
-    $values: #{$values #{$px / $base-size}rem}
-  @return $values
-  
 // Media queries
 $phone: 'max-width: 467px'
 $noteUp: 'min-width: 468px'

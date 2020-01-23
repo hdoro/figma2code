@@ -3,6 +3,8 @@
   import getFixed from './getFixed'
   import getFluid from './getFluid'
 
+  import './lazyImage.sass'
+
   export let image = {}
   export let fluid = undefined
   export let fixed = undefined
@@ -32,10 +34,6 @@
     ? getFixed({ image, fixed, aspectRatio, format })
     : getFluid({ image, fluid, sizes, format })
 </script>
-
-<style lang="postcss" src="./lazyImage.postcss" global>
-
-</style>
 
 {#if image && image.asset && image.asset._ref && (fluid || fixed)}
   <div

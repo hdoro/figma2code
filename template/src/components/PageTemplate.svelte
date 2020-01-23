@@ -4,6 +4,8 @@
   import Footer from './Footer/Footer.svelte'
   import SEOHead from './Head/SEOHead.svelte'
 
+  import './Blog/post.standalone.sass'
+
   export let data
 
   $: config = data.config
@@ -18,13 +20,15 @@
   $: isPost = content._type === 'post'
 </script>
 
-<style src="./Blog/post.postcss" global>
-
-</style>
-
 <SEOHead {meta} {config} {scripts} />
 
 <Header links={config.headerLinks} />
+
+<svelte:head>
+  {#if isPost}
+    <link rel="stylesheet" href="/styles/post.css">
+  {/if}
+</svelte:head>
 
 {#if isPost}
   <main class="post section section_lg">

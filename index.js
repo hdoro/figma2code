@@ -23,6 +23,11 @@ metalsmith(__dirname)
   .source("template")
   .destination("output")
   .metadata(config)
+  .path([
+    './.stylelintrc',
+    './.prettierrc',
+    './eslintrc.js',
+  ])
   .clean(true)
   .use(getData)
   .use(processData)
