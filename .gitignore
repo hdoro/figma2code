@@ -1,5 +1,6 @@
 node_modules
 data
 output
+output-test
 .env
 tags-cheatsheet.html

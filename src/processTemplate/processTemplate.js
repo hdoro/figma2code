@@ -19,7 +19,7 @@ const FILES_TO_INJECT = [
     variables: ["SITE_NAME", "SITE_URL", "SANITY_ID"]
   },
   {
-    path: "src\\utils\\importFromSanity\\index.js",
+    path: "internal\\importFromSanity\\index.js",
     variables: ["SANITY_ID"]
   },
   {

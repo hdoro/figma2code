@@ -1,11 +1,12 @@
 // See https://github.com/differui/rollup-plugin-sass
 import sass from "rollup-plugin-sass";
+import { writeFileSync, readFileSync } from 'fs'
 
 export default sass({
   options: {
     indentedSyntax: true,
     // Extra line in the end to prevent errors with the SASS compiler
-    data: readFileSync('../src/styles/theme.sass', { encoding: 'utf-8' }) + '\n'
+    data: readFileSync('./src/styles/theme.sass', { encoding: 'utf-8' }) + '\n'
   },
   output(_styles, styleNodes) {
     // CSS files to be written to the `static` folder

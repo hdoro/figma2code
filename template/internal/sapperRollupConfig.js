@@ -8,8 +8,8 @@ import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
 
 import pkg from '../package.json'
-import babelConfig from './babelConfig.js.js'
-import sassPlugin from './sassPlugin.js.js'
+import babelConfig from './babelConfig.js'
+import sassPlugin from './sassPlugin.js'
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
