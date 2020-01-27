@@ -1,7 +1,6 @@
 const fs = require('fs')
 const split = require('split2')
 const through = require('through2')
-const jsonfile = require('jsonfile')
 const sanityClient = require('@sanity/client')
 
 const client = sanityClient({
@@ -17,12 +16,16 @@ const pump = require('./pump')
 
 const exportUrl = client.getUrl(`/data/export/production`)
 
-const cachedFileLocation = './src/.data'
-const cachedFilePath = `${cachedFileLocation}/sanity.json`
+const CACHE_FOLDER = './src/.data'
+const CACHED_FILE_PATH = `${CACHE_FOLDER}/sanity.json`
 
 const exportSanity = async (cached = false) => {
   if (cached) {
-    const cachedDocs = await jsonfile.readFileSync(cachedFilePath, err => {
+    // If the cache folder isn't there yet, create it
+    if (!fs.existsSync(CACHE_FOLDER)) {
+      fs.mkdirSync(CACHE_FOLDER)
+    }
+    const cachedDocs = fs.readFileSync(CACHED_FILE_PATH, err => {
       console.error(err)
     })
     return cachedDocs
@@ -44,8 +47,8 @@ const exportSanity = async (cached = false) => {
     console.error(error)
   }
   console.timeEnd('[sanity] exporting data: ')
-  fs.mkdir(cachedFileLocation, () => {
-    jsonfile.writeFile(cachedFilePath, allDocs, { spaces: 2 }, err => {
+  fs.mkdir(CACHE_FOLDER, () => {
+    fs.writeFile(CACHED_FILE_PATH, JSON.stringify(allDocs, null, 2), err => {
       console.error(err)
     })
   })

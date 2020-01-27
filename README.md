@@ -32,3 +32,10 @@
 1. Create components
 1. Create the CMS schema
 1. Inject project variables in the final template
+
+
+## TODO
+
+- styles
+  - define how classNames will be generated
+  - provide fallback for primary colors

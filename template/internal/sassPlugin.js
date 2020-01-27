@@ -1,6 +1,16 @@
 // See https://github.com/differui/rollup-plugin-sass
-import sass from "rollup-plugin-sass";
+import sass from 'rollup-plugin-sass'
 import { writeFileSync, readFileSync } from 'fs'
+import postcss from 'postcss'
+
+const STYLES_FOLDER = 'static/styles'
+
+const IS_DEV = process.env.NODE_ENV === 'development'
+
+function getStandaloneFileName(id) {
+  const splitted = id.split('\\')
+  return splitted[splitted.length - 1].replace('.standalone.sass', '')
+}
 
 export default sass({
   options: {
@@ -17,24 +27,33 @@ export default sass({
     for (const node of styleNodes) {
       // .standalone.sass files will be bundled separately
       if (node.id.includes('.standalone.sass')) {
-        const splitted = node.id.split('\\')
-        const finalFileName = splitted[splitted.length - 1].replace(
-          '.standalone.sass',
-          ''
-        )
-        files[finalFileName] = (files[finalFileName] || '') + node.content
+        const fileName = getStandaloneFileName(node.id)
+        files[fileName] = (files[fileName] || '') + node.content
       } else {
         files.global += node.content
       }
     }
+    // Finally, write each file to STYLES_FOLDER
     for (const key in files) {
       if (files.hasOwnProperty(key)) {
-        writeFileSync(`static/styles/${key}.css`, files[key])
+        files[key]
+        writeFileSync(`${STYLES_FOLDER}/${key}.css`, files[key])
       }
     }
   },
-  processor: css =>
-    postcss([require('postcss-preset-env')({ stage: 0 }), require('cssnano')])
-      .process(css)
+  // Post-process .css files with postcss to make them work in every browser and to compress them
+  processor: (css, source) => {
+    // If in development mode, save some processing time and skip the processing
+    if (IS_DEV) {
+      return css
+    }
+    // To help with debugging, we tell postcss where these files came from
+    let from = `${STYLES_FOLDER}/global.css`
+    if (source.includes('.standalone.sass')) {
+      from = `${STYLES_FOLDER}/${getStandaloneFileName(source)}.css`
+    }
+    return postcss([require('postcss-preset-env')({ stage: 1 }), require('cssnano')])
+      .process(css, { from })
       .then(result => result.css)
+  }
 })

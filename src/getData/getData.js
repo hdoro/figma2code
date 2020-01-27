@@ -1,7 +1,8 @@
 const axios = require('axios')
-const jsonfile = require('jsonfile')
+const fs = require('fs')
 
-const CACHE_PATH = './data/cachedFigmaFile.json'
+const CACHE_FOLDER = './data'
+const CACHE_PATH = `${CACHE_FOLDER}/cachedFigmaFile.json`
 const BASE_URL = 'https://api.figma.com/v1/files'
 
 async function getData(files, metalsmith, done) {
@@ -14,11 +15,10 @@ async function getData(files, metalsmith, done) {
   } = metalsmith._metadata
 
   let data
-  console.log(useCache)
 
   if (useCache) {
     try {
-      data = jsonfile.readFileSync(CACHE_PATH)
+      data = JSON.parse(fs.readFileSync(CACHE_PATH, { encoding: 'utf-8' }))
       files.data = data
       done()
       return
@@ -45,11 +45,17 @@ async function getData(files, metalsmith, done) {
   data.document.children = data.document.children.filter(canvas => {
     return canvasArray ? canvasArray.indexOf(canvas.name) >= 0 : true
   })
+  console.log('cacheData', '\n')
 
   // Cache response if desired
   if (cacheData) {
+    console.log('Rolando')
     console.time('Caching data')
-    jsonfile.writeFileSync(CACHE_PATH, data, {
+    // If the cache folder isn't there yet, create it
+    if (!fs.existsSync(CACHE_FOLDER)) {
+      fs.mkdirSync(CACHE_FOLDER)
+    }
+    fs.writeFileSync(CACHE_PATH, JSON.stringify(data, null, 2), {
       spaces: 2,
       encoding: 'utf-8'
     })
