@@ -1,7 +1,7 @@
 const axios = require('axios')
 const fs = require('fs')
 
-const CACHE_FOLDER = './data'
+const CACHE_FOLDER = './.data'
 const CACHE_PATH = `${CACHE_FOLDER}/cachedFigmaFile.json`
 const BASE_URL = 'https://api.figma.com/v1/files'
 

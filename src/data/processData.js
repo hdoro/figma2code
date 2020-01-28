@@ -1,4 +1,16 @@
 const { mergeStyles } = require('./extractProperties')
+const { parseNodeName } = require('../utils')
+
+function getChildrenMeta(child) {
+  if (child.children) {
+    child.children = child.children.map(getChildrenMeta)
+  }
+  if (child.name) {
+    console.log('\n\n', child.name)
+    child._meta = parseNodeName(child.name)
+  }
+  return child
+}
 
 function processNode(node) {
   const { children, styles, componentId, type } = node
@@ -34,13 +46,16 @@ function processNode(node) {
       layoutGrids,
       isMask,
       isMaskOutline,
+      // Avoid overwriting the master component's name
+      name,
       ...usefulProperties
     } = node
     // Save the usefulProperties to our object of components
     used.components[node.id] = Object.assign(used.components[node.id] || {}, {
-      children,
+      children: children.map(getChildrenMeta),
       type,
-      ...usefulProperties
+      ...usefulProperties,
+      _meta: parseNodeName(name)
     })
   }
 
@@ -121,9 +136,12 @@ function process(data) {
       console.warn(`Couldn't find master instance of component ${name} (${id})`)
       delete data.components[id]
     } else {
+      // If the component is used and has children, add enrich it with the found props
       data.components[id] = {
         ...data.components[id],
-        ...used.components[id]
+        ...used.components[id],
+        // Also add some meta information to be used during component and CMS creation
+        _meta: parseNodeName(name)
       }
     }
   }
@@ -150,10 +168,10 @@ function process(data) {
   return data
 }
 
-module.exports = async function processDataStep(files, _metalsmith, done) {
-  const data = files.data
-  const processed = process(data)
+module.exports = async function processData(files, _metalsmith, done) {
+  const processed = process(files.data)
 
+  files.data = processed
   files['processed.json'] = {
     contents: Buffer.from(JSON.stringify(processed, null, 2))
   }

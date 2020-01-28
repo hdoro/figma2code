@@ -2,11 +2,12 @@ const metalsmith = require('metalsmith')
 const { readFileSync } = require('fs')
 require('dotenv').config()
 
-const getData = require('./src/getData/getData')
-const processData = require('./src/processData/processData')
+const getData = require('./src/data/getData')
+const processData = require('./src/data/processData')
 // const createComponents = require("./src/components/createComponents");
+const createCmsSchema = require("./src/cms/createCmsSchema");
 const createStyleVariables = require('./src/styles/createStyleVariables')
-const processTemplate = require('./src/processTemplate/processTemplate')
+const processTemplate = require('./src/template/processTemplate')
 
 const config = {
   token: process.env.FIGMA_TOKEN,
@@ -40,7 +41,7 @@ metalsmith(__dirname)
   .use(processData)
   .use(createStyleVariables)
   // .use(createComponents)
-  // .use(createCmsSchema)
+  .use(createCmsSchema)
   .use(processTemplate)
   // Cleaning files that shouldn't go to output
   .use(function(files, metalsmith, done) {
