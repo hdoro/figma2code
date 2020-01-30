@@ -1,10 +1,10 @@
 ## Goal
 
-- create CMS objects and documents
-- create `objects/index.js` and `documents/index.js`
+- create CMS objects and documents ✅
+- create `objects/index.js` and `documents/index.js` ✅
 - create the `pageBody.js` object, if applicable
-- provide validation in objects
-- Description in case optional
+- provide validation in objects ✅
+- Description in case optional ✅
 - generate `.data/sanity.json` with dummy text as placeholder for data
   - For documents, create several test entries
 - generate a valid schema for pages
@@ -22,6 +22,7 @@
   - `block` -> might include it in the future, but for now we don't have a use case for it
   - `document` -> you can't include a field with this type in any Sanity object/document
   - `geopoint` and `file` -> not useful for us
+  - `object` -> having them inline is a pain due to Sanity's limitations and extracting them into their own objects is complicated and makes the code hard to read. Hence, if you want a new object, create a component out of it.
 - If no type found, ignore the child/component
 - If `[object]`, we'll create a new object in the schema with `{parentComponentName} + (propName)` as its ID
   - if `(propName)` missing, ignore it
@@ -33,8 +34,34 @@
 - Components and children that create objects must include `[object]`
 - Components that create documents must include `[document]`
 - If referencing a type of document, use `[ref.DOC_TYPE]`
-- `[array.subType]` and `[ref.subType]` do essentially the same thing
+- `[array.subType]` and `[ref.subType]` (or `reference.subType`) both have their own special field values, which are parsed accordingly
+- Get the object/document's title from its Figma description
+- Types of validation function:
+  - `array`
+    - unique
+    - min
+    - max
+    - length
+  - `url`
+    - allowRelative
+    - relativeOnly
+  - `text`
+    - min
+    - max
+  - `default`
+  - In addition, all of them include:
+    - required (defaults to `true`)
 
-## Ideas
-
-- Loop through 
+<!-- 
+// In case I need this in the future:
+const BASIC_CMS_TYPES = [
+  boolean,
+  date,
+  datetime,
+  number,
+  slug,
+  string,
+  text,
+  url
+]
+-->

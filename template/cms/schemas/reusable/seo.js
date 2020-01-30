@@ -1,5 +1,4 @@
-export const seoTitle = 
-{
+export const seoTitle = {
   name: 'seoTitle',
   title: 'Título de SEO',
   description:
@@ -9,10 +8,9 @@ export const seoTitle =
     Rule.min(30)
       .max(65)
       .warning('Título idealmente entre 30 e 65 caracteres')
-},
+}
 
-export const seoDescription = 
-{
+export const seoDescription = {
   name: 'seoDescription',
   title: 'Descrição "Meta"',
   description:
@@ -33,8 +31,7 @@ export const ogImage = {
   type: 'image'
 }
 
-export const scripts = 
-{
+export const scripts = {
   name: 'scripts',
   title: '🤖 Códigos customizados para entrar na página',
   description:

@@ -6,7 +6,6 @@ function getChildrenMeta(child) {
     child.children = child.children.map(getChildrenMeta)
   }
   if (child.name) {
-    console.log('\n\n', child.name)
     child._meta = parseNodeName(child.name)
   }
   return child

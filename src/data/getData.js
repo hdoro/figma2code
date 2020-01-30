@@ -45,11 +45,9 @@ async function getData(files, metalsmith, done) {
   data.document.children = data.document.children.filter(canvas => {
     return canvasArray ? canvasArray.indexOf(canvas.name) >= 0 : true
   })
-  console.log('cacheData', '\n')
 
   // Cache response if desired
   if (cacheData) {
-    console.log('Rolando')
     console.time('Caching data')
     // If the cache folder isn't there yet, create it
     if (!fs.existsSync(CACHE_FOLDER)) {

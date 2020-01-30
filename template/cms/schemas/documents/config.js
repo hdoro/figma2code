@@ -45,7 +45,7 @@ export default {
       name: 'headerLinks',
       title: '🚢 Links do cabeçalho (navbar)',
       description:
-        '⚡ Campo opcional mas altamente encorajado. O último da lista recebe cor roxa p/ destaque.',
+        '⚡ Campo opcional mas altamente encorajado.',
       type: 'array',
       of: [
         {

@@ -11,7 +11,7 @@ export default {
       type: 'slug',
       title: 'Endereço relativo da categoria',
       description:
-        'É adicionado depois de /blog. Ex: usos-para-o-plexi se tornaria /blog/usos-para-o-plexi 😉',
+        'É adicionado depois de /blog. Ex: primeiro-post se tornaria /blog/primeiro-post 😉',
       source: 'meta.title',
       validation: Rule => Rule.required().error('Campo obrigatório')
     },

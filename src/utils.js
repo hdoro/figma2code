@@ -50,6 +50,7 @@ exports.parseNodeName = function(nodeName) {
   let cmsType
   let propName
   let htmlTag
+  let isRequired = false
 
   const originalName = nodeName
     .replace(CMS_TYPE_REGEX, match => {
@@ -65,6 +66,10 @@ exports.parseNodeName = function(nodeName) {
       htmlTag = match.replace(/[\{\}]/g, '')
       return ''
     })
+    .replace(/\*/g, () => {
+      isRequired = true
+      return ''
+    })
     // And finish off by clearing spaces
     .trim()
 
@@ -77,6 +82,7 @@ exports.parseNodeName = function(nodeName) {
     htmlTag,
     originalName,
     camelCasedName,
+    isRequired,
     // To be used to create Svelte components
     componentName: camelCasedName && capitalize(camelCasedName)
   }
