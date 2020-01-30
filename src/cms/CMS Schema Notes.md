@@ -36,6 +36,7 @@
 - If referencing a type of document, use `[ref.DOC_TYPE]`
 - `[array.subType]` and `[ref.subType]` (or `reference.subType`) both have their own special field values, which are parsed accordingly
 - Get the object/document's title from its Figma description
+- For fields' labels (`title` property), `Field Label[cmsType]`
 - Types of validation function:
   - `array`
     - unique
