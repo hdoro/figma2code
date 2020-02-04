@@ -6,11 +6,16 @@ function getVarStr({ name, value }) {
   return `$${name}: ${value}`
 }
 
-function getClassStr({ name, props }) {
-  return `.${name}
+function getMixinStr({ name, props }) {
+  return `@mixin ${name}
   ${Object.keys(props)
     .map(k => `${k}: ${props[k]}`)
     .join('\n  ')}`
+}
+
+function getColorMixins({ name, value }) {
+  return `@mixin ${name}($property: color)
+  #{$property}: ${value}\n`
 }
 
 function getTypeVarNth(arr, varName, value) {
@@ -28,7 +33,7 @@ function getTypeClass(
       {
         'font-family': getTypeVarNth(families, 'families', style.fontFamily),
         'font-weight': getTypeVarNth(weights, 'weights', style.fontWeight),
-        'font-size': getTypeVarNth(sizes, 'sizes', style.fontSize),
+        'font-size': `getRem(${getTypeVarNth(sizes, 'sizes', style.fontSize)})`,
         'line-height': getTypeVarNth(
           lineHeights,
           'lineHeights',
@@ -46,8 +51,7 @@ function getTypeClass(
   }
 }
 
-// @TODO types should follow effects example: define helper classes and base variables
-module.exports = function(files, metalsmith, done) {
+module.exports = function(files, _metalsmith, done) {
   let colors = []
   let effects = []
   let typeStyles = {
@@ -93,7 +97,7 @@ module.exports = function(files, metalsmith, done) {
     }
   }
 
-  const typeClasses = typeStyles.rawStyles.map(s => getTypeClass(s, typeStyles))
+  const typeMixins = typeStyles.rawStyles.map(s => getTypeClass(s, typeStyles))
   delete typeStyles.rawStyles
 
   // Ordering variables
@@ -123,15 +127,18 @@ ${Object.keys(typeStyles)
   .join('\n')}
 
 // ===============
-// Utility classes
+// Utility mixins
+
+// Colors
+${colors.map(getColorMixins).join('\n')}
 
 // Typography
-${typeClasses.map(getClassStr).join('\n\n')}
+${typeMixins.map(getMixinStr).join('\n\n')}
 
 // Effects
 ${effects
-  .filter(e => !!e.class)
-  .map(e => getClassStr(e.class))
+  .filter(e => !!e.mixin)
+  .map(e => getMixinStr(e.mixin))
   .join('\n\n')}
   `
 

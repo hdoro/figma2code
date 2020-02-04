@@ -3,14 +3,14 @@
 
 $base-size: 4px
 
-//VARIABLES_GENERATION//
-
 // Functions
 @function getRem($sizes...)
   $values: ''
   @each $px in $sizes
     $values: #{$values #{$px / $base-size}rem}
   @return $values
+
+//VARIABLES_GENERATION//
 
 // Structure
 $container-lg: getRem(1200px)

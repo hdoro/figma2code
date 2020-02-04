@@ -1,59 +1,55 @@
-const { parse, evaluate } = require("groq-js");
-
-const getStyles = require("./getStyles");
-const getMain = require("./getMain");
-const getCms = require("./getCms");
 const { addFile } = require("../utils");
 
-const COMP_QUERY = `*[_type == "component"]{
-  ...,
-  children {
-    ...,
-    "_componentName": *[_id == ^.componentId][0].nameCap,
+async function createComponents(files, _metalsmith, done) {
+  const { data } = files
+  let components = {}
+
+  for (const key of Object.keys(data.components)) {
+    const comp = data.components[key]
+    const { componentName, cssClassName: baseClass } = comp._meta
+
+    let compInfo = {
+      usedComponents: [],
+      props: {},
+      markup: [],
+      styles: {}
+    }
+    for (const child of comp.children) {
+      const { cssClassName: childClass, isRequired, propName, htmlTag  } = child._meta
+      let childMarkup = {}
+
+      // If we have a prop, add it to the current component
+      if (propName) {
+        compInfo.props[propName] = {
+          required: isRequired || false
+        }
+        childMarkup.propName = propName
+        if (propName === 'image') {
+          childMarkup.component = 'LazyImage'
+          if (compInfo.usedComponents.indexOf('LazyImage') < 0) {
+            compInfo.usedComponents.push('LazyImage')
+          }
+          // Let's set the current width as the max width
+          childMarkup.props = {
+            maxWidth: child.absoluteBoundingBox.width
+          }
+        } else if (propName === 'body') {
+          childMarkup.component = 'Markdown'
+          if (compInfo.usedComponents.indexOf('LazyImage') < 0) {
+            compInfo.usedComponents.push('LazyImage')
+          }
+        }
+      }
+
+      // If we have a childClass, 
+      if (childClass) {
+        const className = `${baseClass}__${childClass}`
+        // @TODO: parse styles
+        styles[className] = {}
+        childMarkup.className = className
+      }
+    }
   }
-}|order(name)`;
-
-
-async function createComponents(files, metalsmith, done) {
-  const dataset = files.data;
-  const tree = parse(COMP_QUERY);
-  const value = await evaluate(tree, { dataset });
-  const components = await value.get();
-
-  for (const c of components) {
-    files[`src/components/${c.nameCap}/${c.nameCap}.svelte`] = addFile(
-      getMain(c)
-    );
-    files[`src/components/${c.nameCap}/${c.name}.postcss`] = addFile(
-      getStyles(c),
-      "scss"
-    );
-    files[`cms/schemas/objects/${c.nameCamel}.js`] = addFile(
-      getCms(c),
-      "babel"
-    );
-  }
-  files[`cms/schemas/objects/index.js`] = addFile(
-    components
-      .map(c => `import ${c.name.toLowerCase()} from './${c.nameCamel}'`)
-      .join("\n") +
-      "\n\nexport default [" +
-      components.map(c => c.name.toLowerCase()).join(",") +
-      "]"
-  );
-  files[`src/components/allComponents.js`] = addFile(
-    components
-      .map(
-        c =>
-          `import ${c.name.toLowerCase()} from './${c.nameCap}/${
-            c.nameCap
-          }.svelte'`
-      )
-      .join("\n") +
-      "\n\nexport default [" +
-      components.map(c => c.name.toLowerCase()).join(",") +
-      "]"
-  );
 
   done();
 }

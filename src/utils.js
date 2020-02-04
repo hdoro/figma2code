@@ -75,13 +75,14 @@ exports.parseNodeName = function(nodeName) {
 
   // To be used by CMS schema
   const camelCasedName = originalName && toCamelCase(originalName)
-  
+
   return {
     cmsType,
     propName,
     htmlTag,
     originalName,
     camelCasedName,
+    cssClassName: camelCasedName && camelToHyphen(camelCasedName) || propName,
     isRequired,
     // To be used to create Svelte components
     componentName: camelCasedName && capitalize(camelCasedName)

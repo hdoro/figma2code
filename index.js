@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const getData = require('./src/data/getData')
 const processData = require('./src/data/processData')
-// const createComponents = require("./src/components/createComponents");
+const createComponents = require("./src/components/createComponents");
 const createCmsSchema = require("./src/cms/createCmsSchema");
 const createStyleVariables = require('./src/styles/createStyleVariables')
 const processTemplate = require('./src/template/processTemplate')

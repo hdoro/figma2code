@@ -136,7 +136,7 @@
   // Style-related
   "Add property + PostCSS variable": {
     "scope": "sass,postcss",
-    "description": "Add a property with a variable value through preCSS variables",
+    "description": "Add a property with a value corresponding to a pre-compiled variable",
     "prefix": "var",
     "body": ["${1:property}: $${2:varName}"]
   },
@@ -242,112 +242,10 @@
     "prefix": "widthHeight",
     "body": ["width: ${1:1em}", "height: ${1}"]
   },
-  "[SCSS/CSS] Add property + PostCSS variable": {
-    "scope": "css,scss",
-    "description": "Add a property with a variable value through preCSS variables",
-    "prefix": "var",
-    "body": ["${1:property}: $${2:varName}"]
-  },
-  "[SCSS/CSS] Grid": {
-    "scope": "css,scss",
-    "description": "Display grid + justify-content, align-items and grid-gap set to what you want",
-    "prefix": "grid",
-    "body": [
-      "display: grid;",
-      "justify-content: ${1:center};",
-      "align-items: ${2:center};",
-      "grid-gap: ${3:0};"
-    ]
-  },
-  "[SCSS/CSS] Grid structure": {
-    "scope": "css,scss",
-    "description": "Set how the grid should behave",
-    "prefix": "gridStructure",
-    "body": [
-      "grid-template-${1:columns}: repeat(${2:auto-fit}, minmax(${3:280px}, ${4:450px}));",
-      "grid-gap: ${5:0};"
-    ]
-  },
-  "[SCSS/CSS] Flex": {
-    "scope": "css,scss",
-    "description": "Display flex + justify-content, align-items and flex-wrap set to what you want",
-    "prefix": "flex",
-    "body": [
-      "display: flex;",
-      "justify-content: ${1:center};",
-      "align-items: ${2:center};",
-      "${0:flex-wrap: wrap};"
-    ]
-  },
-  "[SCSS/CSS] Flex Wrap": {
-    "scope": "css,scss",
-    "description": "flex-wrap: wrap",
-    "prefix": "flexWrap",
-    "body": ["flex-wrap: ${1:wrap}"]
-  },
-  "[SCSS/CSS] Circle": {
-    "scope": "css,scss",
-    "description": "Create a circle with fixed width and height",
-    "prefix": "circle",
-    "body": [
-      "border-radius: 50%;",
-      "width: ${1:1em};",
-      "height: ${1:1em};",
-      "font-size: ${2:1em};"
-    ]
-  },
-  "[SCSS/CSS] Absolute cover": {
-    "scope": "css,scss",
-    "description": "Set an element to cover its relative parent container",
-    "prefix": "absCover",
-    "body": [
-      "position: ${1:absolute};",
-      "width: 100%;",
-      "height: 100%;",
-      "top: 0;",
-      "left: 0;",
-      "${0:object-fit: cover};"
-    ]
-  },
-  "[SCSS/CSS] Absolute position": {
-    "scope": "css,scss",
-    "description": "Position through position: absolute",
-    "prefix": "absPos",
-    "body": [
-      "position: ${1:absolute};",
-      "top: ${2:50%};",
-      "left: ${3:50%};",
-      "transform: ${4:translate(-50%,-50%)};"
-    ]
-  },
-  "[SCSS/CSS] Relative Index": {
-    "scope": "css,scss",
-    "description": "Relative position the element and set its z-index",
-    "prefix": "relIndex",
-    "body": ["position: ${1:relative};", "z-index: ${2:1};"]
-  },
-  "[SCSS/CSS] Border": {
-    "scope": "css,scss",
-    "description": "Regular border",
-    "prefix": "border",
-    "body": ["border: ${1:1px} ${2:solid} ${3:$color};"]
-  },
-  "[SCSS/CSS] Media query": {
-    "scope": "css,scss",
-    "description": "Create media query definitions",
-    "prefix": "mediaQuery",
-    "body": ["@media (${1:$$tabletUp})", "\t${2::root}", "\t\t${0}"]
-  },
-  "[SCSS/CSS] Center Container": {
-    "scope": "css,scss",
-    "description": "Set a max width for a container and center it in its parent",
-    "prefix": "centerContainer",
-    "body": ["max-width: ${1:600px};", "margin: ${2:2em} ${3:auto};"]
-  },
-  "[SCSS/CSS] Same width and height": {
-    "scope": "css,scss",
-    "description": "Set the same value for width and height",
-    "prefix": "widthHeight",
-    "body": ["width: ${1:1em};", "height: ${1};"]
+  "Get size in rems": {
+    "scope": "sass",
+    "description": "Use the getRem function to transform pixels to rems",
+    "prefix": "getRem",
+    "body": ["getRem(${1:30px})"]
   }
 }
