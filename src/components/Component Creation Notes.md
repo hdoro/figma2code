@@ -21,9 +21,8 @@
   - generate as much style as possible
   - `max-width` and `font-size` should use the `getRem` function
     - ex: `getRem(1200px)`
-  - avoid styling `body` / `p`
   - For defined styles, `@include ${style.name}`
-    - `stroke`, `fill`, ``, Ignore `grid` styles
+    - `stroke`, `fill`, `text` and `effect`. Ignore `grid` styles
     - `fill` styles are `color` for text and `background` for rectangles and the likes
       - For fill `@mixin`s, use `@include fill-name(property-name)`
   - for type, get `textAlignHorizontal`
@@ -59,7 +58,7 @@ let components = {
     syles: {
       hero__title: {
         'font-size': '48px',
-        extends: {
+        extended: {
           color: '67:125',
           effect: '23:130',
         }
@@ -91,9 +90,9 @@ let components = {
         ]
       },
       {
-        tag: 'array',
+        tag: 'div', // optional for arrays
         propName: 'ctas',
-        of: [
+        array: [
           {
             tag: 'navLink',
             propName: 'cta'

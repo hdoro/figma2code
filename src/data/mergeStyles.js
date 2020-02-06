@@ -49,21 +49,19 @@
 */
 
 // Function to parse styles from node and add them to usedStyles
-exports.mergeStyles = function(node, currStyles) {
+module.exports = function(node, currStyles) {
   for (const type of Object.keys(node.styles)) {
-    const id = node.styles[type];
-    const newStyle = currStyles[id] || {};
+    const styleName = node.styles[type]
+    const newStyle = currStyles[styleName] || {}
     /*
       Fill, stroke and background styles always refer to color styles/variables, which are of styleType === 'FILL'. Hence, add a `fills` array to them according to the value of the corresponding key inside the node.
     */
-    if (["fill", "stroke", "background"].indexOf(type) > -1) {
+    if (['fill', 'stroke', 'background'].indexOf(type) > -1) {
       const nodeKey = type === 'background' ? type : type + 's'
-      newStyle.fills = node[nodeKey];
-    }
-     else if (type === "effect") {
-       newStyle.effect = node.effects
-     }
-     else if (type === "text") {
+      newStyle.fills = node[nodeKey]
+    } else if (type === 'effect') {
+      newStyle.effect = node.effects
+    } else if (type === 'text') {
       /*
         The 3 unused properties are the ones that are independent of text styles and can be overwritten on a layer-basis, so we dump them here and prevent them from entering our newStyle.style object
       */
@@ -72,10 +70,10 @@ exports.mergeStyles = function(node, currStyles) {
         textAlignVertical,
         fills,
         ...fixedTypeStyles
-      } = node.style;
-      newStyle.style = Object.assign(newStyle.style || {}, fixedTypeStyles);
+      } = node.style
+      newStyle.style = Object.assign(newStyle.style || {}, fixedTypeStyles)
     }
-    currStyles[id] = newStyle
+    currStyles[styleName] = newStyle
   }
   return currStyles
 }

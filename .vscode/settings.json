@@ -5,9 +5,6 @@
   "breadcrumbs.enabled": true,
   "markdown.preview.breaks": true,
   "editor.formatOnSave": true,
-  "workbench.colorCustomizations": {
-    "statusBar.background": "%BRAND_PRIMARY%"
-  },
   "files.associations": {
     "*.stylelintrc": "json"
   }

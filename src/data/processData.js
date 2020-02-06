@@ -1,9 +1,11 @@
-const { mergeStyles } = require('./extractProperties')
+const mergeStyles = require('./mergeStyles')
 const { parseNodeName } = require('../utils')
 
 function getChildrenMeta(child) {
-  if (child.children) {
-    child.children = child.children.map(getChildrenMeta)
+  if (Array.isArray(child.children)) {
+    // We need to reverse children arrays as Figma provides them
+    // in reversed order from frames
+    child.children = child.children.reverse().map(getChildrenMeta)
   }
   if (child.name) {
     child._meta = parseNodeName(child.name)
@@ -11,8 +13,9 @@ function getChildrenMeta(child) {
   return child
 }
 
-function processNode(node) {
-  const { children, styles, componentId, type } = node
+function processNode(node, stylesObj) {
+  const { styles, componentId, type } = node
+  let { children } = node
   let used = {
     components: {},
     styles: {}
@@ -21,7 +24,6 @@ function processNode(node) {
   // If instance of a component, than we know for sure
   // the component is being used
   if (componentId) {
-    // console.log(used.components[componentId])
     // add a used: true flag to the component object
     used.components[componentId] = Object.assign(
       used.components[componentId] || {},
@@ -60,19 +62,23 @@ function processNode(node) {
 
   // Process children nodes
   if (Array.isArray(children) && children.length) {
+    // We need to reverse children arrays as Figma provides them
+    // in reversed order from frames
+    children = children.reverse()
+
     // Merge the parent's used styles & components with the children's
     children.forEach(child => {
-      const usedByChild = processNode(child)
+      const usedByChild = processNode(child, stylesObj)
       for (const id in usedByChild.components) {
         used.components[id] = Object.assign(
           used.components[id] || {},
           usedByChild.components[id]
         )
       }
-      for (const id in usedByChild.styles) {
-        used.styles[id] = Object.assign(
-          used.styles[id] || {},
-          usedByChild.styles[id]
+      for (const styleName in usedByChild.styles) {
+        used.styles[styleName] = Object.assign(
+          used.styles[styleName] || {},
+          usedByChild.styles[styleName]
         )
       }
     })
@@ -80,6 +86,18 @@ function processNode(node) {
 
   // If we have a styles object, add every id found in it to usedStyles
   if (styles) {
+    // stylesObj is used to expand references to style ids in `styles` objects found in components
+    // fill: '63:97' -> fill: 'gray-100'
+    for (const key of Object.keys(styles)) {
+      const styleId = styles[key]
+      // This name has already been parsed to be CSS-friendly and is what is going to show up in the final `theme.sass`
+      const styleName = stylesObj[styleId] && stylesObj[styleId].name
+      if (!styleName) {
+        delete styles[key]
+      } else {
+        styles[key] = styleName
+      }
+    }
     used.styles = mergeStyles(node, used.styles)
   }
 
@@ -93,8 +111,8 @@ function process(data) {
   }
 
   // Make style names CSS friendly
-  for (const key in data.styles) {
-    const spacelessName = data.styles[key].name
+  for (const styleName in data.styles) {
+    const spacelessName = data.styles[styleName].name
       .toLowerCase()
       .replace(/[\/\s]/g, '-')
       // Remove duplicate hyphens (24px---bold -> 24px-bold)
@@ -102,24 +120,24 @@ function process(data) {
       .trim()
     // If the first character of a variable/class is a number, CSS will break
     // Hence we prefix the name with '_s'
-    data.styles[key].name = isNaN(spacelessName[0])
+    data.styles[styleName].name = isNaN(spacelessName[0])
       ? spacelessName
       : 's_' + spacelessName
   }
 
   // Merge the parent's used styles & components with the children's
   data.document.children.forEach(child => {
-    const usedByChild = processNode(child)
-    for (const id in usedByChild.components) {
-      used.components[id] = Object.assign(
-        used.components[id] || {},
-        usedByChild.components[id]
+    const usedByChild = processNode(child, data.styles)
+    for (const compId in usedByChild.components) {
+      used.components[compId] = Object.assign(
+        used.components[compId] || {},
+        usedByChild.components[compId]
       )
     }
-    for (const id in usedByChild.styles) {
-      used.styles[id] = Object.assign(
-        used.styles[id] || {},
-        usedByChild.styles[id]
+    for (const styleName in usedByChild.styles) {
+      used.styles[styleName] = Object.assign(
+        used.styles[styleName] || {},
+        usedByChild.styles[styleName]
       )
     }
   })
@@ -145,19 +163,19 @@ function process(data) {
     }
   }
 
-  for (const id in data.styles) {
-    const dataStyle = data.styles[id]
-    const usedStyle = used.styles[id]
+  for (const styleId in data.styles) {
+    const dataStyle = data.styles[styleId]
+    const usedStyle = used.styles[dataStyle.name]
     if (!usedStyle || dataStyle.styleType === 'GRID') {
-      delete data.styles[id]
+      delete data.styles[styleId]
     } else if (
       dataStyle.styleType === 'FILL' &&
       (!usedStyle.fills || !usedStyle.fills.length)
     ) {
-      console.warn(`Fill style ${dataStyle.name} (${id}) has no fills!`)
-      delete data.styles[id]
+      console.warn(`Fill style ${dataStyle.name} (${styleId}) has no fills!`)
+      delete data.styles[styleId]
     } else {
-      data.styles[id] = {
+      data.styles[styleId] = {
         ...dataStyle,
         ...usedStyle
       }

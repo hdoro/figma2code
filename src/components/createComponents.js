@@ -1,4 +1,6 @@
-const { addFile } = require("../utils");
+const { addFile } = require('../utils')
+const parseCompChildren = require('./parseCompChildren')
+const compTreeToFiles = require('./compTreeToFiles')
 
 async function createComponents(files, _metalsmith, done) {
   const { data } = files
@@ -6,8 +8,10 @@ async function createComponents(files, _metalsmith, done) {
 
   for (const key of Object.keys(data.components)) {
     const comp = data.components[key]
-    const { componentName, cssClassName: baseClass } = comp._meta
+    // componentName will be used as the file path
+    const { componentName } = comp._meta
 
+    // Parsed information about the component that will be used to build the final `.sass` and `.svelte` files
     let compInfo = {
       usedComponents: [],
       props: {},
@@ -15,43 +19,21 @@ async function createComponents(files, _metalsmith, done) {
       styles: {}
     }
     for (const child of comp.children) {
-      const { cssClassName: childClass, isRequired, propName, htmlTag  } = child._meta
-      let childMarkup = {}
-
-      // If we have a prop, add it to the current component
-      if (propName) {
-        compInfo.props[propName] = {
-          required: isRequired || false
-        }
-        childMarkup.propName = propName
-        if (propName === 'image') {
-          childMarkup.component = 'LazyImage'
-          if (compInfo.usedComponents.indexOf('LazyImage') < 0) {
-            compInfo.usedComponents.push('LazyImage')
-          }
-          // Let's set the current width as the max width
-          childMarkup.props = {
-            maxWidth: child.absoluteBoundingBox.width
-          }
-        } else if (propName === 'body') {
-          childMarkup.component = 'Markdown'
-          if (compInfo.usedComponents.indexOf('LazyImage') < 0) {
-            compInfo.usedComponents.push('LazyImage')
-          }
-        }
-      }
-
-      // If we have a childClass, 
-      if (childClass) {
-        const className = `${baseClass}__${childClass}`
-        // @TODO: parse styles
-        styles[className] = {}
-        childMarkup.className = className
-      }
+      compInfo = parseCompChildren({ child, comp, compInfo })
     }
+    components[componentName] = compInfo
   }
 
-  done();
+  // Here simply for testing
+  files['generated-comp.json'] = addFile(components)
+
+  // Get the final svelte and sass files in order to add them to the files object
+  const toBeAdded = compTreeToFiles(components)
+  for (const file of toBeAdded) {
+    files[file.path] = file.content
+  }
+
+  done()
 }
 
-module.exports = createComponents;
+module.exports = createComponents

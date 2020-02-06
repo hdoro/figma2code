@@ -1,6 +1,5 @@
 const { getColor } = require('./getColor')
 const { getEffect } = require('./getEffect')
-const { addFile } = require('../utils')
 
 function getVarStr({ name, value }) {
   return `$${name}: ${value}`
@@ -13,9 +12,9 @@ function getMixinStr({ name, props }) {
     .join('\n  ')}`
 }
 
-function getColorMixins({ name, value }) {
-  return `@mixin ${name}($property: color)
-  #{$property}: ${value}\n`
+function getColorMixins({ name }) {
+  return `@mixin ${name}($property: background)
+  #{$property}: $${name}\n`
 }
 
 function getTypeVarNth(arr, varName, value) {
@@ -23,7 +22,7 @@ function getTypeVarNth(arr, varName, value) {
   return `nth($${varName},${index + 1})`
 }
 
-function getTypeClass(
+function getTypeMixin(
   { name, style },
   { families, sizes, weights, lineHeights, letterSpacings }
 ) {
@@ -54,14 +53,14 @@ function getTypeClass(
 module.exports = function(files, _metalsmith, done) {
   let colors = []
   let effects = []
-  let typeStyles = {
+  let typeVariables = {
     families: [],
     sizes: [],
     weights: [],
     lineHeights: [],
-    letterSpacings: [],
-    rawStyles: []
+    letterSpacings: []
   }
+  let typeStyles = []
 
   for (const id in files.data.styles) {
     const style = files.data.styles[id]
@@ -78,27 +77,27 @@ module.exports = function(files, _metalsmith, done) {
       effects.push(getEffect(style))
     } else if (styleType === 'TEXT') {
       const { style: text } = style
-      typeStyles.families.push(text.fontFamily)
-      typeStyles.sizes.push(text.fontSize)
-      typeStyles.weights.push(text.fontWeight)
-      typeStyles.lineHeights.push(Math.floor(text.lineHeightPercentFontSize))
-      typeStyles.letterSpacings.push(text.letterSpacing)
-      if (text.italic) {
-        typeStyles.hasItalic = true
-      }
-      typeStyles.rawStyles.push(style)
+      typeVariables.families.push(text.fontFamily)
+      typeVariables.sizes.push(text.fontSize)
+      typeVariables.weights.push(text.fontWeight)
+      typeVariables.lineHeights.push(Math.floor(text.lineHeightPercentFontSize))
+      typeVariables.letterSpacings.push(text.letterSpacing)
+      // The other properties will create defined variables, while typeStyles will be used for mixin generation (see below)
+      typeStyles.push(style)
     }
   }
 
-  for (const k of Object.keys(typeStyles)) {
-    let value = typeStyles[k]
-    if (Array.isArray(value) && k !== 'rawStyles') {
-      typeStyles[k] = Array.from(new Set(value)).sort()
-    }
+  for (const k of Object.keys(typeVariables)) {
+    let value = typeVariables[k]
+    // Remove duplicates and sort variables
+    typeVariables[k] = Array.from(new Set(value)).sort()
   }
 
-  const typeMixins = typeStyles.rawStyles.map(s => getTypeClass(s, typeStyles))
-  delete typeStyles.rawStyles
+  const typeMixins = typeStyles.map(s => getTypeMixin(s, typeVariables))
+
+  console.log({
+    typeVariables
+  })
 
   // Ordering variables
   colors.sort((a, b) => (a.name <= b.name ? -1 : 1))
@@ -116,9 +115,9 @@ ${effects
   .join('\n')}
 
 // Typography
-${Object.keys(typeStyles)
+${Object.keys(typeVariables)
   .map(k => {
-    let value = typeStyles[k]
+    let value = typeVariables[k]
     if (Array.isArray(value)) {
       value = value.join(', ')
     }
