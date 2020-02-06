@@ -95,10 +95,6 @@ module.exports = function(files, _metalsmith, done) {
 
   const typeMixins = typeStyles.map(s => getTypeMixin(s, typeVariables))
 
-  console.log({
-    typeVariables
-  })
-
   // Ordering variables
   colors.sort((a, b) => (a.name <= b.name ? -1 : 1))
   effects.sort((a, b) =>

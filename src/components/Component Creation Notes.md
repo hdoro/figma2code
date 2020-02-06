@@ -60,7 +60,7 @@ let components = {
         'font-size': '48px',
         extended: {
           color: '67:125',
-          effect: '23:130',
+          effect: '23:130'
         }
       }
     },
@@ -92,7 +92,8 @@ let components = {
       {
         tag: 'div', // optional for arrays
         propName: 'ctas',
-        array: [
+        isArray: true,
+        children: [
           {
             tag: 'navLink',
             propName: 'cta'

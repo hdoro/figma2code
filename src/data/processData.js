@@ -182,6 +182,9 @@ function process(data) {
     }
   }
 
+  // Finally, delete data.document as we won't use it
+  delete data.document
+
   return data
 }
 

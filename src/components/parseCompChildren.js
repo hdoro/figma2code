@@ -1,14 +1,23 @@
 const getChildStyles = require('./getChildStyles')
+const { DEFAULT_COMP_INFO } = require('./compUtils')
+const { camelToHyphen } = require('../utils')
+
+// Avoid overwriting styles by adding a "-dup" string at the end of its className if duplicate.
+function getStyleKey(key, compInfo) {
+  if (!!compInfo.styles[key]) {
+    key += '-dup'
+  }
+  return key
+}
 
 function parseCompChildren({ child, comp, compInfo }) {
-  const { cssClassName: parentClass } = comp._meta
-  const {
-    cssClassName: childClass,
-    isRequired,
-    propName,
-    htmlTag,
-    cmsType
-  } = child._meta
+  const parentClass = camelToHyphen(comp._meta.camelCasedName)
+  const childClass =
+    child._meta.propName ||
+    child._meta.htmlTag ||
+    child._meta.cmsType ||
+    child._meta.camelCasedName
+  const { isRequired, propName, htmlTag, cmsType } = child._meta
   let childMarkup = {}
 
   // If we have a prop, add it to the current component
@@ -34,10 +43,17 @@ function parseCompChildren({ child, comp, compInfo }) {
     }
   }
 
+  // If a component, import it and use it for the markup
+  // Also, we don't want to recreate styles from another component, so we return right away
+  if (child.type === 'INSTANCE') {
+    compInfo.usedComponents.push(child.componentId)
+    childMarkup.component = child.componentId
+    return compInfo
+  }
+
   // We'll only add a class if we have an htmlTag
   if (htmlTag && childClass) {
-    const className = `${parentClass}__${childClass}`
-    // @TODO: parse styles
+    const className = getStyleKey(`${parentClass}__${childClass}`, compInfo)
     compInfo.styles[className] = getChildStyles(child)
     childMarkup.className = className
   }
@@ -47,16 +63,28 @@ function parseCompChildren({ child, comp, compInfo }) {
     childMarkup.tag = htmlTag
   }
 
-  // Deal with arrays
-  if (cmsType && cmsType.split('.')[0] === 'array') {
-    // childMarkup.array =
-  }
+  if (Array.isArray(child.children)) {
+    const isArray = cmsType && cmsType.split('.')[0] === 'array'
+    childMarkup.isArray = isArray
 
-  // If a component, import it and use it for the markup
-  if (child.type === 'INSTANCE') {
-    compInfo.usedComponents.push(child.componentId)
-    delete childMarkup.tag
-    childMarkup.component = child.componentId
+    // const childrenInfo = parseCompChildren({
+    //   child,
+    //   comp,
+    //   compInfo: DEFAULT_COMP_INFO
+    // })
+    // // usedComponents and styles will be blended with `compInfo`
+    // compInfo.usedComponents.concat(childrenInfo.usedComponents)
+    // for (const key of childrenInfo.styles) {
+    //   const className = getStyleKey(key, compInfo)
+    //   compInfo.styles[className] = childrenInfo.styles[key]
+    // }
+    // // And markup will be added as the current child's children markup
+    // childMarkup.children = childrenInfo.markup
+    // // Only merge props if this isn't an array.
+    // // If it's, we'll ignore `props` as we're assuming props found in the array tree refer to variables defined in its own `{#each}` loop.
+    // if (!isArray) {
+    //   compInfo.props = { ...compInfo.props, ...childrenInfo.props }
+    // }
   }
 
   // Push the current child's markup to the component's markup

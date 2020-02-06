@@ -82,7 +82,6 @@ exports.parseNodeName = function(nodeName) {
     htmlTag,
     originalName,
     camelCasedName,
-    cssClassName: camelCasedName && camelToHyphen(camelCasedName) || propName,
     isRequired,
     // To be used to create Svelte components
     componentName: camelCasedName && capitalize(camelCasedName)

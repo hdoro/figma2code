@@ -1,6 +1,7 @@
 const { addFile } = require('../utils')
 const parseCompChildren = require('./parseCompChildren')
 const compTreeToFiles = require('./compTreeToFiles')
+const { DEFAULT_COMP_INFO } = require('./compUtils')
 
 async function createComponents(files, _metalsmith, done) {
   const { data } = files
@@ -12,12 +13,7 @@ async function createComponents(files, _metalsmith, done) {
     const { componentName } = comp._meta
 
     // Parsed information about the component that will be used to build the final `.sass` and `.svelte` files
-    let compInfo = {
-      usedComponents: [],
-      props: {},
-      markup: [],
-      styles: {}
-    }
+    let compInfo = DEFAULT_COMP_INFO
     for (const child of comp.children) {
       compInfo = parseCompChildren({ child, comp, compInfo })
     }
