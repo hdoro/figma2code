@@ -73,8 +73,16 @@ exports.parseNodeName = function(nodeName) {
     // And finish off by clearing spaces
     .trim()
 
-  // To be used by CMS schema
-  const camelCasedName = originalName && toCamelCase(originalName)
+  // In Figma, designers may name components with a "Component/Variation/SubVariation" notation
+  const compVariations = originalName.split('/')
+
+  // 🎯 To be used by CMS schema.
+  // Component variations are CMS fields, not different objects in the schema, so we only use the parent component
+  const camelCasedName = originalName && toCamelCase(compVariations[0])
+
+  // 🎯 Used to create Svelte components
+  // Also follows the schema logic for component variations being props instead of whole different components
+  const componentName = camelCasedName && capitalize(camelCasedName)
 
   return {
     cmsType,
@@ -83,7 +91,7 @@ exports.parseNodeName = function(nodeName) {
     originalName,
     camelCasedName,
     isRequired,
-    // To be used to create Svelte components
-    componentName: camelCasedName && capitalize(camelCasedName)
+    componentName,
+    variations: originalName && compVariations.slice(1)
   }
 }

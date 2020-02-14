@@ -1,4 +1,4 @@
-import { seoTitle, seoDescription, ogImage, scripts } from "../reusable/seo";
+import { seoTitle, seoDescription, ogImage, scripts } from '../reusable/seo'
 
 export default {
   type: 'object',
@@ -14,8 +14,8 @@ export default {
     }
   ],
   fields: [
-    {...seoTitle, fieldset: 'seo'},
-    {...seoDescription, fieldset: 'seo'},
+    { ...seoTitle, fieldset: 'seo' },
+    { ...seoDescription, fieldset: 'seo' },
     {
       name: 'indexable',
       title: 'Indexar essa página no Google?',
@@ -25,6 +25,6 @@ export default {
       type: 'boolean'
     },
     ogImage,
-    scripts,
+    scripts
   ]
 }

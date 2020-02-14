@@ -8,13 +8,111 @@ const { addFile } = require('../utils')
 
 const BASE_DIR = 'src/components/'
 
-function getMarkup(entry) {
-  let final = ''
+const IGNORED_COMPS = [
+  // We'll have a ready-made Button in the template
+  'Button'
+]
 
-  if (entry.component) {
-    const props = entry.props
-    return `<${entry.component} ${entry.props}/>`
+function parseProps(props = {}) {
+  return Object.keys(props)
+    .map(key => {
+      const value = props[key]
+      // Deal with props that must be spread
+      if (value && value._type === 'spread' && value.name) {
+        return `{...${value.name}}`
+      }
+      // Then with string values that are actually pointing to props
+      else if (value && value._type === 'prop' && value.name) {
+        // If the receiving prop name is the same as the one we're passing to the component, then use Svelte's shortHand {propName}
+        if (key === value.name) {
+          return `{${value.name}}`
+        }
+        return `${key}={${value.name}}`
+      }
+      // Then generic objects and arrays that need to be stringified
+      else if (typeof value === 'object' || Array.isArray(value)) {
+        // objProp={{ 'key': value }}
+        // arrProp={[...]}
+        return `${key}={${JSON.stringify(value)}}`
+      }
+      // Then numbers and booleans, as they need to preserve their typeof
+      else if (typeof value === 'number' || typeof value === 'boolean') {
+        // numProp={10}
+        // boolProp={true}
+        return `${key}={${value}}`
+      }
+      // And finally go with strings
+      // strProp="value"
+      return `${key}="${value}"`
+    })
+    .join(' ')
+}
+
+function getMarkup({ el, allProps }) {
+  const expandedProp = el.propName && allProps[el.propName]
+
+  function getStructure() {
+    const className = el.className ? `class="${el.className}"` : ''
+    // Render components
+    if (el.component) {
+      const propsStr = parseProps(el.props)
+      return `<${el.component} ${propsStr}/>`
+    }
+    // Render shallow tag-based elements
+    else if (el.tag && !Array.isArray(el.children)) {
+      const content = el.propName ? '{' + el.propName + '}' : ''
+      return `<${el.tag} ${className}>${content}</${el.tag}>`
+    }
+    // Nested structures that don't replicate the same component
+    else if (Array.isArray(el.children) && !el.isArray) {
+      const childrenMarkup = el.children
+        .map(c => getMarkup({ el: c, allProps }))
+        .join('\n')
+      const opening = `<${el.tag} ${className}>`
+      const closing = `</${el.tag}>`
+      let content = childrenMarkup
+
+      // If we're dealing with an array with replicable markup, use Svelte's {#each} method
+      if (el.isArray && el.propName) {
+        const iterableVarName = el.propName.slice(0, el.propName.length - 2)
+        content = `
+            {#each ${el.propName} as ${iterableVarName}}
+              ${childrenMarkup}
+            {/each}
+        `
+      }
+      // And finally render the structure with a wrapping element if it has a tag for it
+      if (el.tag) {
+        return `${opening}${content}${closing}`
+      } else return content
+    }
   }
+  const structure = getStructure()
+  // If the component is required or it simply doesn't have props, then render unconditionally
+  if ((expandedProp && expandedProp.required) || !el.propName) {
+    return structure
+  }
+  // Else we need to wrap it in a conditional to prevent rendering elements with undefined props
+  else {
+    return `
+    {#if typeof ${el.propName} !== 'undefined'}
+      ${structure}
+    {/if}
+    `
+  }
+}
+
+function getProps(props) {
+  return (
+    Object.keys(props)
+      //  prop names with a dot (cta.link, for example) shouldn't be declared as they refer to another parent prop
+      .filter(k => !k.includes('.'))
+      .map(k => {
+        // If not required, default the prop to `undefined`
+        return `export let ${k} ${props[k].required ? '' : '= undefined'}`
+      })
+      .join('\n')
+  )
 }
 
 function getSvelteFile(comp, compName) {
@@ -24,14 +122,11 @@ function getSvelteFile(comp, compName) {
       .map(u => `import ${u} from '../${u}/${u}.svelte'`)
       .join('\n')
 
-  const props = Object.keys(comp.props)
-    .map(k => {
-      // If not required, default the prop to `undefined`
-      return `export let ${k} ${comp.props[k].required ? '' : '= undefined'}`
-    })
-    .join('\n')
+  const props = getProps(comp.props)
 
-  const markup = comp.markup.map(getMarkup).join('\n')
+  const markup = comp.markup
+    .map(c => getMarkup({ el: c, allProps: comp.props }))
+    .join('\n')
 
   return `
   <script>
@@ -81,6 +176,9 @@ module.exports = function(tree) {
   let files = []
 
   for (const compName of Object.keys(tree)) {
+    if (IGNORED_COMPS.indexOf(compName) >= 0) {
+      continue
+    }
     const compDir = BASE_DIR + compName + '/'
     const compInfo = tree[compName]
 
