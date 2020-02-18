@@ -42,3 +42,7 @@
 - Migrate to Typescript
   - code has become a mess
 - We could use Figma's `Component/Variation` naming convention to implement boolean tags in the CMS schema, if this becomes a common pattern
+- `{#if}` blocks for optional objects
+- initial content for CMS (text.characters)
+
+* formatting

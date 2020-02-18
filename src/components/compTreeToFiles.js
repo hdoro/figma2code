@@ -64,7 +64,7 @@ function getMarkup({ el, allProps }) {
       return `<${el.tag} ${className}>${content}</${el.tag}>`
     }
     // Nested structures that don't replicate the same component
-    else if (Array.isArray(el.children) && !el.isArray) {
+    else if (Array.isArray(el.children)) {
       const childrenMarkup = el.children
         .map(c => getMarkup({ el: c, allProps }))
         .join('\n')
@@ -74,12 +74,9 @@ function getMarkup({ el, allProps }) {
 
       // If we're dealing with an array with replicable markup, use Svelte's {#each} method
       if (el.isArray && el.propName) {
-        const iterableVarName = el.propName.slice(0, el.propName.length - 2)
-        content = `
-            {#each ${el.propName} as ${iterableVarName}}
-              ${childrenMarkup}
-            {/each}
-        `
+        content = `{#each ${el.propName} as item}
+        ${childrenMarkup}
+        {/each}`
       }
       // And finally render the structure with a wrapping element if it has a tag for it
       if (el.tag) {
@@ -154,6 +151,7 @@ function getSassFile({ styles }) {
     }
   */
   return Object.keys(styles)
+    .sort()
     .map(className => {
       const { extended = {}, ...cssProps } = styles[className]
       return `.${className}

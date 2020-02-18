@@ -74,6 +74,7 @@ function parseCompChildren({
   if (child.type === 'INSTANCE') {
     // Find the corresponding componentName for the given componentId
     const expandedComp = allComps[child.componentId]
+
     if (!expandedComp || !expandedComp._meta.componentName) {
       // Deal with the lack of
       console.warn(`Couldn't find component for instance ${child.componentId}`)
@@ -81,6 +82,7 @@ function parseCompChildren({
     }
     compInfo.usedComponents.push(expandedComp._meta.componentName)
     childMarkup.component = expandedComp._meta.componentName
+    compInfo.markup.push(childMarkup)
     return compInfo
   }
 
@@ -118,9 +120,29 @@ function parseCompChildren({
           styles: Object.assign(acc.styles, curr.styles)
         }
       }, DEFAULT_COMP_INFO)
-    console.log('\n\n', parentClass, childrenInfo)
+    // If array, we only want to replicate one child instance
+    if (isArray) {
+      const arrChild = childrenInfo.markup[0]
+      childrenInfo.markup = [
+        {
+          ...arrChild,
+          props: Object.assign(
+            arrChild.props || {},
+            // If the child is a component, spread the item object from the {#each} array as props
+            !!arrChild.component && {
+              item: {
+                _type: 'spread',
+                name: 'item'
+              }
+            }
+          )
+        }
+      ]
+    }
     // usedComponents and styles will be blended with `compInfo`
-    // compInfo.usedComponents.concat(childrenInfo.usedComponents)
+    compInfo.usedComponents = compInfo.usedComponents.concat(
+      childrenInfo.usedComponents
+    )
     for (const key of Object.keys(childrenInfo.styles)) {
       const className = getStyleKey(key, compInfo)
       compInfo.styles[className] = childrenInfo.styles[key]
@@ -132,20 +154,15 @@ function parseCompChildren({
     if (!isArray) {
       compInfo.props = { ...compInfo.props, ...childrenInfo.props }
     }
-    compInfo.usedComponents = compInfo.usedComponents.concat(
-      childrenInfo.usedComponents
-    )
   }
 
   // Push the current child's markup to the component's markup
-  if (childMarkup.tag || childMarkup.component || childMarkup.array) {
+  if (childMarkup.tag || childMarkup.component || childMarkup.children) {
     compInfo.markup.push(childMarkup)
   } else {
-    // console.warn(
-    //   `\n\nComponent skipped from markup: \n${JSON.stringify(
-    //     childMarkup
-    //   )}\n${JSON.stringify(child._meta)}\n${parentClass}`
-    // )
+    console.warn(
+      `\nComponent skipped from markup: ${JSON.stringify(child._meta)}`
+    )
   }
 
   return compInfo

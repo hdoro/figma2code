@@ -1,5 +1,6 @@
-const { addFile } = require('../utils')
+const { addFile, camelToHyphen } = require('../utils')
 const parseCompChildren = require('./parseCompChildren')
+const getChildStyles = require('./getChildStyles')
 const compTreeToFiles = require('./compTreeToFiles')
 const { DEFAULT_COMP_INFO } = require('./compUtils')
 
@@ -23,6 +24,20 @@ async function createComponents(files, _metalsmith, done) {
         compInfo,
         allComps: data.components
       })
+    }
+    // If the component itself has an htmlTag, we should wrap all of its children' markup inside that tag
+    if (comp._meta.htmlTag) {
+      const parentClass = camelToHyphen(comp._meta.camelCasedName)
+      // Wrap children markup
+      compInfo.markup = [
+        {
+          children: compInfo.markup,
+          tag: comp._meta.htmlTag,
+          className: parentClass
+        }
+      ]
+      // And add the parentClass to the styles object
+      compInfo.styles[parentClass] = getChildStyles(comp)
     }
     debugArray.push({
       compInfo,
