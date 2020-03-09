@@ -12,7 +12,7 @@
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                 <style type="text/css">
                     body {
-                        font-family: sans-serif;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
                         font-size: 16px;
                         color: #242628;
                     }

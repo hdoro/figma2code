@@ -4,3 +4,5 @@ exports.DEFAULT_COMP_INFO = {
   markup: [],
   styles: {}
 }
+
+exports.TAGLESS_EL_KEY = '%TAGLESS%'

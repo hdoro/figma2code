@@ -100,8 +100,8 @@ function getFieldsFromChild(child) {
     return field
   }
 
-  // If we have an htmlTag and children, but don't have a propName nor a cmsType, then we're dealing with a wrapper UI-only component. Dig into its children.
-  if (htmlTag && !cmsType && !propName && child.children) {
+  // If we don't have a propName nor a cmsType, then we might be dealing with a wrapper UI-only component. Dig into its children.
+  if (!cmsType && !propName && child.children) {
     const childrenFields = child.children.map(getFieldsFromChild)
     return childrenFields
   }

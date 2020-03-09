@@ -1,5 +1,7 @@
 import { FiHome } from 'react-icons/fi'
 
+import { getLangField, getLangTitle } from '../reusable/i18n'
+
 export default {
   name: 'home',
   type: 'document',
@@ -7,6 +9,7 @@ export default {
   icon: FiHome,
   __experimental_actions: ['update', 'publish'],
   fields: [
+    getLangField({ hidden: true, readOnly: true }),
     {
       name: 'meta',
       type: 'homeMeta',
@@ -26,9 +29,11 @@ export default {
     }
   ],
   preview: {
-    select: {},
-    prepare() {
-      return { title: 'Página inicial' }
+    select: {
+      lang: 'lang'
+    },
+    prepare({ lang }) {
+      return { title: `Página inicial - ${getLangTitle(lang)}` }
     }
   }
 }

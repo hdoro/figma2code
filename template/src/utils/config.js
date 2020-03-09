@@ -10,3 +10,15 @@ export const SANITY_CONFIG = {
   projectId: sanityId,
   useCdn: true
 }
+
+export const SITE_LANGUAGES = [
+  {
+    title: 'Português',
+    value: 'pt'
+  },
+  {
+    title: 'English',
+    value: 'en',
+    isDefault: true
+  }
+]

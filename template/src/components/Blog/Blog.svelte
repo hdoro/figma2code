@@ -1,5 +1,5 @@
 <script>
-  import Markdown from '../Markdown.svelte'
+  import PortableText from '../PortableText/PortableText.svelte'
   import Logo from '../Logo.svelte'
   import Link from '../Link.svelte'
   import Header from '../Header/Header.svelte'
@@ -28,7 +28,7 @@
 <SEOHead meta={info} {config} {scripts} />
 
 <svelte:head>
-  <link rel="stylesheet" href="/styles/blog.css">
+  <link rel="stylesheet" href="/styles/blog.css" />
 </svelte:head>
 
 <Header links={config.headerLinks} />
@@ -39,7 +39,7 @@
       {info.title}
     </h1>
     {#if info.body}
-      <Markdown body={info.body} />
+      <PortableText body={info.body} />
     {/if}
   </div>
   <div class="blog__container">

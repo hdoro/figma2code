@@ -58,7 +58,7 @@
     type="image/png"
     sizes="16x16"
     href="/favicon/favicon-16x16.png" />
-  <meta name="msapplication-TileColor" content="PRIMARY_COLOR" />
+  <meta name="msapplication-TileColor" content="%BRAND_PRIMARY%" />
   <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png" />
-  <meta name="theme-color" content="PRIMARY_COLOR" />
+  <meta name="theme-color" content="%BRAND_PRIMARY%" />
 </svelte:head>

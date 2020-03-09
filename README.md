@@ -44,5 +44,31 @@
 - We could use Figma's `Component/Variation` naming convention to implement boolean tags in the CMS schema, if this becomes a common pattern
 - `{#if}` blocks for optional objects
 - initial content for CMS (text.characters)
+- formatting Svelte and SASS files
+- multi-lang 404s
+- round line-heights in theme.sass
+- line-heights in numbers instead of percentages (1.25 instead of 125)
+- Right now, if sass file is empty, the compiler will yell:
+  `Unexpected token (Note that you need plugins to import files that are not JavaScript)`
+- default footer
 
-* formatting
+## What I've changed during Kaordica
+
+- Validation
+- Portable text instead of markdown
+  - CMS & component
+- i18n
+  - deskStructure
+  - (soon) page generation
+    - home
+    - regular pages
+- CSS pipeline
+- preview scripts
+- snippets
+- sidePadding
+- navLink -> links.js
+  - Also, changed urlFld description
+- LazyImage (related to images not rendering or scaling well (abs px sizes instead of rems))
+  - getFixed
+  - getImageUrl
+  - lazyImage.sass

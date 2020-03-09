@@ -5,9 +5,14 @@ $base-size: 4px
 
 // Functions
 @function getRem($sizes...)
-  $values: ''
-  @each $px in $sizes
-    $values: #{$values #{$px / $base-size}rem}
+  $values: null
+  @each $size in $sizes
+    @if type-of($size) != "number"
+      @debug #{'Invalid value passed to getRem:' $size}
+    @else if unit($size) == ''
+      $values: append($values, #{($size * 1px) / $base-size}rem)
+    @else if unit($size) == 'px'
+      $values: append($values, #{$size / $base-size}rem)
   @return $values
 
 //VARIABLES_GENERATION//

@@ -17,8 +17,8 @@
     "sourceData": "node internal/importFromSanity/index.js",
     "dev:sanity": "yarn workspace cms start",
     "dev:site": "sapper dev",
-    "dev:scripts": "rollup -c scripts.config.js -w",
-    "build:scripts": "rollup -c scripts.config.js",
+    "dev:scripts": "rollup -c internal/scriptsRollupConfig.js -w",
+    "build:scripts": "rollup -c internal/scriptsRollupConfig.js",
     "build:sanity": "yarn workspace cms build && yarn workspace cms copy:redirects",
     "build:site-no-data": "yarn build:scripts && sapper export --entry /allPages",
     "build:site": "yarn build:scripts && yarn sourceData && sapper export --entry /allPages"

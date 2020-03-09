@@ -1,15 +1,17 @@
 import React from 'react'
 
+import './studioCustomGlobalStyles.css?raw'
+
 const Logo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 144 142">
+  <svg viewBox="0 0 31 38" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
-      stroke="currentColor"
-      fill="none"
-      strokeWidth="5"
-      d="M76.1 13.1c2.5-1 5.2-.6 7.3 1L125 45.7a7.5 7.5 0 012.8 7l-6.9 50.6c-.4
-    2.7-2.1 5-4.6 6l-48.6 19.2c-2.4 1-5.2.6-7.3-1L19 96a7.5 7.5 0
-    01-2.9-7l7-50.6c.3-2.6 2.1-5 4.6-6l48.5-19.2zM92.5 21.3l-9 74M88.2 45.3L19.9
-    72.8M107.5 114l-64-50"
+      d="M0 17.2851V0.617188H16.6679L11.6607 5.62441H5.00722V12.2778L0 17.2851Z"
+      fill="#E91E63"
+    />
+    <path d="M0 20.5776V37.2455H16.6679L0 20.5776Z" fill="#E91E63" />
+    <path
+      d="M20.5776 0.617188L2.26355 18.9313L20.5776 37.2453H30.8664L12.6209 18.9313L30.8664 0.617188H20.5776Z"
+      fill="#E91E63"
     />
   </svg>
 )

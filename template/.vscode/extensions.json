@@ -3,7 +3,6 @@
     "hex-ci.stylelint-plus",
     "jamesbirtles.svelte-vscode",
     "dbaeumer.vscode-eslint",
-    "syler.sass-indented",
-    "fivethree.vscode-svelte-snippets"
+    "syler.sass-indented"
   ]
 }

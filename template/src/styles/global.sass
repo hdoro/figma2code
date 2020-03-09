@@ -1,12 +1,16 @@
 :root
-  // font-family: $family-body
-  // line-height: $line-height
+  font-family: nth($families, 1)
+  line-height: nth($lineHeights,4)
   // color: $text
   font-size: $base-size
-  @include desktopUp
-    font-size: calc($base-size + 0.05vw)
-  @media (min-width: 2500px)
-    font-size: calc($base-size + 0.15vw)   
+  @media (min-width: 1600px) and (min-aspect-ratio: 5/2)
+    font-size: calc(#{$base-size} + 0.025vw)
+  @media (min-width: 1600px) and (max-aspect-ratio: 2/1)
+    font-size: calc(#{$base-size} + 0.025vw)
+  @media (min-width: 1900px) and (max-aspect-ratio: 5/2)
+    font-size: calc(#{$base-size} + 0.05vw)
+  @media (min-width: 2500px) and (max-aspect-ratio: 2/1)
+    font-size: calc(#{$base-size} + 0.1vw)   
 
 .no-scroll,
 .no-scroll body
@@ -21,15 +25,15 @@
   line-height: inherit
 
 ::selection
-  background: $primary
+  // background: $primary
   color: black
 
 body
-  line-height: $line-height
+  line-height: inherit
   margin: 0
   min-height: 100%
   box-sizing: border-box
-  background: $page-bg
+  font-size: getRem(18px)
 
 h1,
 h2,
@@ -39,8 +43,8 @@ h4
 
 h1, h2, h3, h4,
 .f-heading
-  font-family: $family-heading
-  font-weight: $weight-heading
+  font-family: nth($families, 1)
+  font-weight: nth($weights, 2)
 
 h1
   font-size: getRem(30px)
@@ -58,8 +62,8 @@ a
   text-decoration: none
   color: inherit
 
-p & a
-  color: $primary
+p > a
+  // color: $primary
   text-decoration: underline
 
 ul,
@@ -105,13 +109,11 @@ button
   cursor: pointer
 
 .btn
-  background: $primary
   padding: 0.75em 1.75em
   display: inline-block
   min-width: 15em
   position: relative
   text-decoration: none
-  font-weight: $weight-heading
   text-align: center
   letter-spacing: 0.05em
   color: white
@@ -122,7 +124,7 @@ button
     transform: translateY(-5%)
 
 .btn_alt
-  background: $primary
+  // background: $primary
 
 .btn_sm
   padding: 0.35em 1.25em

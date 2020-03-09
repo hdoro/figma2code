@@ -1,5 +1,5 @@
 const getChildStyles = require('./getChildStyles')
-const { DEFAULT_COMP_INFO } = require('./compUtils')
+const { DEFAULT_COMP_INFO, TAGLESS_EL_KEY } = require('./compUtils')
 const { camelToHyphen } = require('../utils')
 
 // Avoid overwriting styles by adding a "-dup" string at the end of its className if duplicate.
@@ -48,14 +48,14 @@ function parseCompChildren({
         }
       }
     } else if (propName === 'body') {
-      childMarkup.component = 'Markdown'
+      childMarkup.component = 'PortableText'
       childMarkup.props = {
         body: {
           _type: 'prop',
           name: 'body'
         }
       }
-      compInfo.usedComponents.push('Markdown')
+      compInfo.usedComponents.push('PortableText')
     } else if (propName === 'cta') {
       childMarkup.component = 'NavLink'
       compInfo.usedComponents.push('NavLink')
@@ -96,6 +96,11 @@ function parseCompChildren({
   // Define the htmlTag
   if (htmlTag) {
     childMarkup.tag = htmlTag
+  }
+  // If the tag is denoted by {} (empty htmlTag), that means we want to render only the prop or children, without any wrapper.
+  // Add TAGLESS_EL_KEY as the tag for compTreeToFiles to properly deal with this case.
+  else if (htmlTag === '') {
+    childMarkup.tag = TAGLESS_EL_KEY
   }
 
   if (Array.isArray(child.children)) {

@@ -12,13 +12,13 @@ const processTemplate = require('./src/template/processTemplate')
 const config = {
   token: process.env.FIGMA_TOKEN,
   fileKey: process.env.FIGMA_FILE_KEY,
-  canvases: 'Components,Desktop',
+  canvases: process.env.FIGMA_CANVASES,
+  sanityID: process.env.SANITY_ID,
+  siteName: process.env.SITE_NAME,
+  siteUrl: process.env.SITE_URL,
+  brandPrimary: process.env.BRAND_PRIMARY,
   useCache: true,
-  cacheData: true,
-  siteName: 'Site da Enactus',
-  sanityID: 'Sanity ID here',
-  brandPrimary: '#ce003c',
-  siteUrl: 'https://enactusufmg.com.br'
+  cacheData: true
 }
 
 function includeConfigs(files, _metalsmith, done) {

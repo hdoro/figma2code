@@ -1,9 +1,16 @@
+import { getLangField, getLangTitle } from '../reusable/i18n'
+
 export default {
   name: 'config',
   title: 'Configurações gerais',
   type: 'document',
   __experimental_actions: ['update', 'publish'],
   fields: [
+    getLangField({
+      title: 'Configuração para qual língua?'
+      // hidden: true,
+      // readOnly: true
+    }),
     {
       name: 'scripts',
       title: 'Códigos customizados para entrar no site',
@@ -28,6 +35,7 @@ export default {
       title: '🖋 Descrição "meta" padrão',
       description:
         '⚡ Campo opcional mas altamente encorajado. Vai ser usada para o compartilhamento em redes sociais em páginas que não tiverem uma imagem customizada.',
+      rows: 3,
       type: 'text'
     },
     {
@@ -44,20 +52,13 @@ export default {
     {
       name: 'headerLinks',
       title: '🚢 Links do cabeçalho (navbar)',
-      description:
-        '⚡ Campo opcional mas altamente encorajado.',
+      description: '⚡ Campo opcional mas altamente encorajado.',
       type: 'array',
       of: [
         {
           type: 'navLink'
         }
       ]
-    },
-    {
-      name: 'address',
-      title: 'Endereço',
-      description: '❓ Campo opcional',
-      type: 'string'
     },
     {
       name: 'blog',
@@ -67,9 +68,11 @@ export default {
     }
   ],
   preview: {
-    select: {},
-    prepare() {
-      return { title: 'Configurações gerais' }
+    select: {
+      lang: 'lang'
+    },
+    prepare({ lang }) {
+      return { title: `Configurações - ${getLangTitle(lang)}` }
     }
   }
 }

@@ -1,0 +1,9 @@
+/* Used the styles below to fix the search field's lack of contrast with white or light navbars */
+
+/* div[class^='SearchField_root'] {
+  background: #edf2f7 !important;
+}
+
+div[class*='SearchField_isFocused'] {
+  background: white !important;
+} */

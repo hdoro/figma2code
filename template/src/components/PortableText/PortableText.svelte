@@ -1,6 +1,4 @@
 <script>
-  import { parseBlockMarkdown, parseInlineMarkdown } from '../utils/parsemd'
-
   export let body
   export let tag
   export let className
@@ -8,7 +6,7 @@
   const classStr = className ? `class="${className}"` : ''
 </script>
 
-{#if body}
+<!-- {#if body}
   {#if tag}
     {@html `
       <${tag} ${classStr}>${parseInlineMarkdown(body)}</${tag}>
@@ -18,4 +16,4 @@
       {@html parseBlockMarkdown(p).replace('<p>', `<p ${classStr}>`)}
     {/each}
   {/if}
-{/if}
+{/if} -->

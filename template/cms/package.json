@@ -11,25 +11,25 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/base": "^0.144.1",
-    "@sanity/components": "^0.144.2",
-    "@sanity/core": "^0.144.0",
-    "@sanity/dashboard": "^0.144.1",
-    "@sanity/default-layout": "^0.144.2",
-    "@sanity/default-login": "^0.144.0",
-    "@sanity/desk-tool": "^0.144.2",
-    "@sanity/production-preview": "^0.144.0",
-    "@sanity/vision": "^0.144.2",
-    "prop-types": "^15.6",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "react-icons": "^3.8.0",
+    "@sanity/base": "^1.148.3",
+    "@sanity/components": "^1.148.1",
+    "@sanity/core": "^1.148.3",
+    "@sanity/dashboard": "^1.148.3",
+    "@sanity/default-layout": "^1.148.4",
+    "@sanity/default-login": "^1.148.1",
+    "@sanity/desk-tool": "^1.148.4",
+    "@sanity/production-preview": "^1.148.1",
+    "@sanity/vision": "^1.148.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-icons": "^3.9.0",
     "react-svelte": "^1.0.2",
-    "sanity-plugin-dashboard-widget-document-list": "^0.0.8",
+    "sanity-plugin-dashboard-widget-document-list": "^0.0.9",
     "sanity-plugin-markdown": "^1.0.1"
   },
   "devDependencies": {
-    "@sanity/cli": "^0.144.0",
-    "copyfiles": "^2.1.1"
+    "@sanity/cli": "^1.148.4",
+    "copyfiles": "^2.2.0"
   }
 }

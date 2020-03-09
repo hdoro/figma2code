@@ -5,6 +5,7 @@
 */
 
 const { addFile } = require('../utils')
+const { TAGLESS_EL_KEY } = require('./compUtils')
 
 const BASE_DIR = 'src/components/'
 
@@ -61,6 +62,10 @@ function getMarkup({ el, allProps }) {
     // Render shallow tag-based elements
     else if (el.tag && !Array.isArray(el.children)) {
       const content = el.propName ? '{' + el.propName + '}' : ''
+      // Deal with tagless elements that want to render the prop
+      if (el.tag === TAGLESS_EL_KEY) {
+        return content
+      }
       return `<${el.tag} ${className}>${content}</${el.tag}>`
     }
     // Nested structures that don't replicate the same component
@@ -80,6 +85,10 @@ function getMarkup({ el, allProps }) {
       }
       // And finally render the structure with a wrapping element if it has a tag for it
       if (el.tag) {
+        if (el.tag === TAGLESS_EL_KEY) {
+          // For tagless elements, if content is null render only {propName}
+          return content || `{${el.propName}}`
+        }
         return `${opening}${content}${closing}`
       } else return content
     }
@@ -157,7 +166,7 @@ function getSassFile({ styles }) {
       return `.${className}
     ${Object.keys(extended)
       .map(extendedProperty => {
-        return `@extend ${extended[extendedProperty]}`
+        return `@include ${extended[extendedProperty]}`
       })
       .join('\n\t')}
     ${Object.keys(cssProps)

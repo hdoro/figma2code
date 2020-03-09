@@ -36,10 +36,6 @@
       "path": "./deskStructure.js"
     },
     {
-      "implements": "part:@sanity/base/theme/variables/override-style",
-      "path": "./variableOverrides.css"
-    },
-    {
       "implements": "part:@sanity/production-preview/resolve-production-url",
       "path": "./getPreviewUrl.js"
     },

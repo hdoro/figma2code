@@ -37,7 +37,7 @@ function parseFields(fields) {
 
 exports.createSchemaFile = ({ fields, ...meta }) => {
   return `
-import { validation } from '../reusable/validation'
+import validation from '../reusable/validation'
 
 export default {
   ${renderMeta(meta)}

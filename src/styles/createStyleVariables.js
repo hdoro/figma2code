@@ -32,7 +32,11 @@ function getTypeMixin(
       {
         'font-family': getTypeVarNth(families, 'families', style.fontFamily),
         'font-weight': getTypeVarNth(weights, 'weights', style.fontWeight),
-        'font-size': `getRem(${getTypeVarNth(sizes, 'sizes', style.fontSize)})`,
+        'font-size': `getRem(#{${getTypeVarNth(
+          sizes,
+          'sizes',
+          style.fontSize
+        )}}px)`,
         'line-height': getTypeVarNth(
           lineHeights,
           'lineHeights',
