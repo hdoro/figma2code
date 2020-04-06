@@ -9,11 +9,11 @@ export default ({ image, fixed, aspectRatio, format }) => {
   let webpsrcset = ''
   let src = ''
 
-  // If no fixed.height, get fixed.width and divider by the aspect ratio to
-  // find the desired height
-  const finalHeight = fixed.height || fixed.width / aspectRatio
+  // If no fixed.height, get fixed.width and divider by the aspect ratio to find the desired height.
+  // We need to round the height or else Sanity's API will break if we pass decimals
+  const finalHeight = Math.round(fixed.height || fixed.width / aspectRatio)
   // Same idea for the width
-  const finalWidth = fixed.width || fixed.height * aspectRatio
+  const finalWidth = Math.round(fixed.width || fixed.height * aspectRatio)
 
   for (const m of multipliers) {
     const currWidth = fixed.width && fixed.width * m
@@ -60,6 +60,8 @@ export default ({ image, fixed, aspectRatio, format }) => {
     srcset,
     width: finalWidth,
     height: finalHeight,
-    style: `height: ${finalHeight}px`
+    // Define the image's dimensions in rems to avoid shrinking them on large screens
+    // (the size / 4 operation is relative to $base-size of 4px)
+    style: `height: ${finalHeight / 4}rem;width: ${finalWidth / 4}rem`
   }
 }

@@ -8,7 +8,7 @@ $base-size: 4px
   $values: null
   @each $size in $sizes
     @if type-of($size) != "number"
-      @debug #{'Invalid value passed to getRem:' $size}
+      @debug #{'Invalid value passed to getRem: "'$size'", which is of type' type-of($size)}
     @else if unit($size) == ''
       $values: append($values, #{($size * 1px) / $base-size}rem)
     @else if unit($size) == 'px'
@@ -21,6 +21,7 @@ $base-size: 4px
 $container-lg: getRem(1200px)
 $container-md: getRem(900px)
 $container-sm: getRem(600px)
+$sidePadding: 3rem
 
 // Transitions
 $t-timing: ease-out

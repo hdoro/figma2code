@@ -1,13 +1,17 @@
+import validation from './validation'
+
 export const seoTitle = {
   name: 'seoTitle',
   title: 'Título de SEO',
   description:
     'Opcional mas altamente encorajado ⚡. Idealmente entre 30 e 65 caracteres',
   type: 'string',
-  validation: Rule =>
-    Rule.min(30)
-      .max(65)
-      .warning('Título idealmente entre 30 e 65 caracteres')
+  validation: validation.text({
+    optional: true,
+    min: 30,
+    max: 65,
+    errMsg: 'Título idealmente entre 30 e 65 caracteres'
+  })
 }
 
 export const seoDescription = {
@@ -16,11 +20,13 @@ export const seoDescription = {
   description:
     'Opcional mas altamente encorajado ⚡. Idealmente entre 40 e 200 caracteres',
   type: 'text',
-  rows: 3,
-  validation: Rule =>
-    Rule.min(40)
-      .max(200)
-      .warning('Descrição idealmente entre 40 e 200 caracteres')
+  rows: 3,,
+  validation: validation.text({
+    optional: true,
+    min: 30,
+    max: 200,
+    errMsg: 'Descrição idealmente entre 30 e 200 caracteres'
+  })
 }
 
 export const ogImage = {

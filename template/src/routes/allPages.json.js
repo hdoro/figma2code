@@ -11,8 +11,10 @@ export async function get(req, res) {
   // Get every CMS page plus the home and 404
   let allPages = [
     { url: '/', label: 'Página inicial' },
+    { url: '/pt', label: 'Página inicial (PT)' },
     { url: '/previa', label: 'Página de prévia' },
-    { url: '/404', label: 'Página não encontrada' },
+    { url: '/404', label: '404 (EN)' },
+    { url: '/pt/404', label: '404 (PT)' },
     ...results.pages.map(p => ({
       url: p.meta.slug.current,
       label: p.meta.title

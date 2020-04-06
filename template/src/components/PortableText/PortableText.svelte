@@ -1,19 +1,9 @@
 <script>
-  export let body
-  export let tag
-  export let className
+  import BlockContent from '@movingbrands/svelte-portable-text'
 
-  const classStr = className ? `class="${className}"` : ''
+  export let body
 </script>
 
-<!-- {#if body}
-  {#if tag}
-    {@html `
-      <${tag} ${classStr}>${parseInlineMarkdown(body)}</${tag}>
-    `}
-  {:else}
-    {#each body.split('\n') as p}
-      {@html parseBlockMarkdown(p).replace('<p>', `<p ${classStr}>`)}
-    {/each}
-  {/if}
-{/if} -->
+{#if Array.isArray(body) && body.length}
+  <BlockContent blocks={body} />
+{/if}

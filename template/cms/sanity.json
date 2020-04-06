@@ -33,15 +33,15 @@
     },
     {
       "name": "part:@sanity/desk-tool/structure",
-      "path": "./deskStructure.js"
+      "path": "./parts/deskStructure.js"
     },
     {
       "implements": "part:@sanity/production-preview/resolve-production-url",
-      "path": "./getPreviewUrl.js"
+      "path": "./parts/getPreviewUrl.js"
     },
     {
       "implements": "part:@sanity/dashboard/config",
-      "path": "./dashboardConfig.js"
+      "path": "./parts/dashboardConfig.js"
     }
   ]
 }

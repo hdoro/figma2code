@@ -1,7 +1,6 @@
 const showImg = target => {
   const container = target.getElementsByClassName('lazy-img__container')[0]
   const { src, srcset, webpsrcset, sizes, alt, width, height } = target.dataset
-
   container.innerHTML = `
     <picture>
       <source
@@ -44,7 +43,8 @@ export const watchImages = images => {
     observer.disconnect()
   }
   observer = new IntersectionObserver(cb, {
-    rootMargin: '0px 0px 100px 0px'
+    rootMargin: '0px 0px 100px 0px',
+    threshold: 0.1
   })
 
   for (let i = 0; i < images.length; i++) {

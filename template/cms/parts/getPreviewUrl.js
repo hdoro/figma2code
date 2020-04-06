@@ -1,4 +1,4 @@
-import { url } from '../src/utils/config'
+import { url } from '../../src/utils/config'
 
 export default function getPreviewUrl(document) {
   if (

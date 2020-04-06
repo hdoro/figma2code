@@ -5,31 +5,29 @@
   "scripts": {
     "copy:redirects": "copyfiles _redirects dist",
     "start": "sanity start",
-    "build": "sanity build"
+    "build": "sanity build && npm run copy:redirects"
   },
   "keywords": [
     "sanity"
   ],
   "dependencies": {
-    "@sanity/base": "^1.148.3",
-    "@sanity/components": "^1.148.1",
-    "@sanity/core": "^1.148.3",
-    "@sanity/dashboard": "^1.148.3",
-    "@sanity/default-layout": "^1.148.4",
-    "@sanity/default-login": "^1.148.1",
-    "@sanity/desk-tool": "^1.148.4",
-    "@sanity/production-preview": "^1.148.1",
-    "@sanity/vision": "^1.148.1",
+    "@sanity/base": "^1.149.10",
+    "@sanity/components": "^1.149.10",
+    "@sanity/core": "^1.149.9",
+    "@sanity/dashboard": "^1.149.10",
+    "@sanity/default-layout": "^1.149.10",
+    "@sanity/default-login": "^1.149.7",
+    "@sanity/desk-tool": "^1.149.10",
+    "@sanity/production-preview": "^1.149.0",
+    "@sanity/vision": "^1.149.0",
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-icons": "^3.9.0",
-    "react-svelte": "^1.0.2",
-    "sanity-plugin-dashboard-widget-document-list": "^0.0.9",
-    "sanity-plugin-markdown": "^1.0.1"
+    "sanity-plugin-dashboard-widget-document-list": "^0.0.10"
   },
   "devDependencies": {
-    "@sanity/cli": "^1.148.4",
+    "@sanity/cli": "^1.149.9",
     "copyfiles": "^2.2.0"
   }
 }

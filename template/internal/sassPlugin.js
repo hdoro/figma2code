@@ -52,7 +52,10 @@ export default sass({
     if (source.includes('.standalone.sass')) {
       from = `${STYLES_FOLDER}/${getStandaloneFileName(source)}.css`
     }
-    return postcss([require('postcss-preset-env')({ stage: 1 }), require('cssnano')])
+    return postcss([
+      require('postcss-preset-env')({ stage: 1 }),
+      require('cssnano')
+    ])
       .process(css, { from })
       .then(result => result.css)
   }

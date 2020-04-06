@@ -36,7 +36,7 @@ const labelFld = {
     })
 }
 
-export const blockLink = {
+const blockLink = {
   name: 'blockLink',
   type: 'object',
   title: 'Link',
@@ -44,7 +44,7 @@ export const blockLink = {
   fields: [urlFld, newWindowFld]
 }
 
-export const navLink = {
+const navLink = {
   name: 'navLink',
   title: 'Link de navegação',
   type: 'object',
@@ -52,7 +52,7 @@ export const navLink = {
   fields: [labelFld, newWindowFld]
 }
 
-export const cta = {
+const cta = {
   name: 'cta',
   title: 'Chamada para ação',
   type: 'object',
@@ -83,7 +83,7 @@ export const cta = {
   ]
 }
 
-export const ctaCaption = {
+const ctaCaption = {
   ...cta,
   name: 'ctaCaption',
   title: 'Chamada para ação com legenda opcional',
@@ -97,3 +97,5 @@ export const ctaCaption = {
     }
   ]
 }
+
+export default [blockLink, navLink, cta, ctaCaption]

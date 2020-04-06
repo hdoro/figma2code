@@ -3,7 +3,7 @@ import { GiBrazilFlag } from 'react-icons/gi'
 import { FaFlagUsa } from 'react-icons/fa'
 import S from '@sanity/desk-tool/structure-builder'
 
-import { SITE_LANGUAGES } from '../src/utils/config'
+import { SITE_LANGUAGES } from '../../src/utils/config'
 
 const LANG_ICONS = {
   pt: GiBrazilFlag,

@@ -1,4 +1,5 @@
 import { FiFolder } from 'react-icons/fi'
+import validation from '../reusable/validation'
 
 export default {
   icon: FiFolder,
@@ -13,7 +14,7 @@ export default {
       description:
         'É adicionado depois de /blog. Ex: primeiro-post se tornaria /blog/primeiro-post 😉',
       source: 'meta.title',
-      validation: Rule => Rule.required().error('Campo obrigatório')
+      validation: validation.default()
     },
     {
       name: 'meta',

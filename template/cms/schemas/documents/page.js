@@ -1,4 +1,5 @@
 import { FiFile as icon } from 'react-icons/fi'
+import validation from '../reusable/validation'
 
 export default {
   name: 'page',
@@ -19,10 +20,11 @@ export default {
       name: 'body',
       type: 'pageBody',
       title: '🖋 Conteúdo da página',
-      validation: Rule =>
-        Rule.required().error(
+      validation: validation.array({
+        min: 0,
+        errMsg:
           'Campo obrigatório. Como pretende postar uma página sem conteúdo? 🤣'
-        )
+      })
     }
   ],
   initialValue: {

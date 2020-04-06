@@ -1,6 +1,7 @@
 import { FiHome } from 'react-icons/fi'
 
 import { getLangField, getLangTitle } from '../reusable/i18n'
+import validation from '../reusable/validation'
 
 export default {
   name: 'home',
@@ -22,10 +23,9 @@ export default {
       name: 'body',
       type: 'pageBody',
       title: '🖋 Conteúdo da página',
-      validation: Rule =>
-        Rule.required().error(
-          'Campo obrigatório. Como pretende postar uma página sem conteúdo? 🤣'
-        )
+      validation: validation.array({
+        min: 0
+      })
     }
   ],
   preview: {

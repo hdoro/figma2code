@@ -1,3 +1,5 @@
+import validation from '../reusable/validation'
+
 export default {
   type: 'object',
   title: 'Script customizado',
@@ -8,14 +10,14 @@ export default {
       title: 'Código em HTML',
       description:
         'Se quiser adicionar algum Javascript ou CSS, colocar o código dentro de uma tag <script> ou <style>, respectivamente.',
-      validation: Rule => Rule.required().error('Campo obrigatório'),
+      validation: validation.default(),
       rows: 10,
       type: 'text'
     },
     {
       name: 'type',
       title: 'Onde entra esse código',
-      validation: Rule => Rule.required().error('Campo obrigatório'),
+      validation: validation.default(),
       options: {
         list: [
           {

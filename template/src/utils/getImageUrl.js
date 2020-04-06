@@ -14,21 +14,31 @@ const possibleParams = {
   quality: 'q'
 }
 
-const getQueryStrings = (params = {}) => {
-  let query = ''
+// Sanity's image API doesn't allow fractions for these values
+// It needs integers, and so we round them below
+const paramsToBeRounded = [
+  'width',
+  'height',
+  'minHeight',
+  'minWidth',
+  'maxHeight',
+  'maxWidth'
+]
 
-  if (Object.keys(params).length) {
-    query += '?'
-  }
+const getQueryStrings = (params = {}) => {
+  let queryParams = []
 
   for (const key in params) {
     if (params.hasOwnProperty(key)) {
-      const value = params[key]
-      query += `${possibleParams[key]}=${value}&`
+      let value = params[key]
+      if (paramsToBeRounded.indexOf(key) >= 0 && typeof value === 'number') {
+        value = Math.round(value)
+      }
+      queryParams.push(`${possibleParams[key]}=${value}`)
     }
   }
 
-  return query
+  return (queryParams.length && `?${queryParams.join('&')}`) || ''
 }
 
 // The _ref structure is as follows: image-{assetId}-{width}x{height}-{format}

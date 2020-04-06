@@ -1,4 +1,5 @@
 import { FiFileText as icon } from 'react-icons/fi'
+import validation from '../reusable/validation'
 
 export default {
   name: 'post',
@@ -19,10 +20,11 @@ export default {
       name: 'body',
       type: 'postBody',
       title: '🖋 Conteúdo do post',
-      validation: Rule =>
-        Rule.required().error(
-          'Campo obrigatório. Como pretende postar sem conteúdo? 🤣'
-        )
+      validation: validation.array({
+        min: 0,
+        errMsg:
+          'Campo obrigatório. Como pretende postar um artigo sem conteúdo? 🤣'
+      })
     }
   ],
   initialValue: {

@@ -1,12 +1,12 @@
 exports.KNOWN_IMPORTABLES = {
   text: {
-    name: "Markdown",
-    path: "../Markdown.svelte",
-    markup: "<Markdown {body} />"
+    name: 'PortableText',
+    path: '../PortableText/PortableText.svelte',
+    markup: '<PortableText {body} />'
   },
   image: {
-    name: "LazyImage",
-    path: "../LazyImage/LazyImage.svelte",
-    markup: "<LazyImage {image} />"
+    name: 'LazyImage',
+    path: '../LazyImage/LazyImage.svelte',
+    markup: '<LazyImage {image} />'
   }
-};
+}

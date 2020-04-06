@@ -1,14 +1,14 @@
 // Regular page/post data
 import { parse, evaluate } from 'groq-js'
 import sanityData from '../.data/sanity.json'
-import { pageQuery, configQuery } from '../utils/queries.js'
+import { homeQuery, configQuery } from '../utils/queries.js'
 
 export async function get(req, res) {
   const lang = (req.query && req.query.lang) || 'default'
   const tree = parse(`
   {
-    "content": *[_id == 'home-${lang}'] { ${pageQuery} }[0],
-    "config": *[_id == "config"] { ${configQuery} }[0]
+    "content": *[_id == 'home-${lang}'] { ${homeQuery} }[0],
+    "config": *[_id == "config-${lang}"] { ${configQuery} }[0]
   }
 `)
   const values = await evaluate(tree, { dataset: sanityData })
