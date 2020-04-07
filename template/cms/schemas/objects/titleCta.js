@@ -1,4 +1,4 @@
-import validation from '../reusable/validation'
+import validation from '../../utils/validation'
 
 export default {
   name: 'titleCta',

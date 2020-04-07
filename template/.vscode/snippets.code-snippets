@@ -12,18 +12,6 @@
     "prefix": "elClass",
     "body": ["<${1:div} class=\"${2:class}\">", "\t${0}", "</${1}>"]
   },
-  "Markdown string": {
-    "scope": "svelte",
-    "description": "Process a string through markdown",
-    "prefix": "markdown",
-    "body": ["{markdownify(${1:string})}"]
-  },
-  "Add PostCSS/SugarSS style": {
-    "prefix": "postcssStyle",
-    "body": [
-      "<style lang=\"postcss\" src=\"${1:./}${2:$TM_FILENAME_BASE}\"></style>"
-    ]
-  },
   // Schemas with sanity
   "Sanity Object": {
     "scope": "javascript",
@@ -88,7 +76,7 @@
     "scope": "javascript",
     "description": "Make a given field required",
     "prefix": "sanityRequired",
-    "body": ["validation: Rule => Rule.required().error('Campo obrigatório'),"]
+    "body": ["validation: validation.default(),"]
   },
   "Sanity Collapse Field": {
     "scope": "javascript",
@@ -114,6 +102,12 @@
     "prefix": "sanityDesc",
     "body": ["description: '${1:description}',"]
   },
+  "Sanity Tip": {
+    "scope": "javascript",
+    "description": "Add a tip as a field's description",
+    "prefix": "sanityTip",
+    "body": ["description: '💡 ${1:tip here}',"]
+  },
   "Sanity Basic Array": {
     "scope": "javascript",
     "description": "Create a basic array field in Sanity",
@@ -126,6 +120,12 @@
       "\tof: [{ type: 'string' }],",
       "},"
     ]
+  },
+  "Sanity schema icon import": {
+    "scope": "javascript",
+    "description": "Import an icon from react-icons to use as a doc/obj's icon",
+    "prefix": "sanityIcon",
+    "body": ["import { ${1:FiSomething} as icon } from 'react-icons/fi'"]
   },
   // Style-related
   "Add property + PostCSS variable": {

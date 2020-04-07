@@ -18,8 +18,7 @@
     "cms-customizer",
     "dashboard-widget-tutorials",
     "dashboard-widget-thanks",
-    "dashboard-widget-document-list",
-    "markdown"
+    "dashboard-widget-document-list"
   ],
   "env": {
     "development": {
@@ -42,6 +41,14 @@
     {
       "implements": "part:@sanity/dashboard/config",
       "path": "./parts/dashboardConfig.js"
+    },
+    {
+      "implements": "part:@sanity/base/document-actions/resolver",
+      "path": "./parts/documentActions.js"
+    },
+    {
+      "name": "part:@sanity/base/new-document-structure",
+      "path": "./parts/newDocumentStructure.js"
     }
   ]
 }

@@ -1,16 +1,15 @@
 import { FiHome } from 'react-icons/fi'
 
-import { getLangField, getLangTitle } from '../reusable/i18n'
-import validation from '../reusable/validation'
+import { getLangTitle } from '../../utils/i18n'
+import validation from '../../utils/validation'
+import { SITE_LANGUAGES } from '../../../src/utils/config'
 
 export default {
   name: 'home',
   type: 'document',
   title: 'Página Inicial',
   icon: FiHome,
-  __experimental_actions: ['update', 'publish'],
   fields: [
-    getLangField({ hidden: true, readOnly: true }),
     {
       name: 'meta',
       type: 'homeMeta',
@@ -21,8 +20,8 @@ export default {
     },
     {
       name: 'body',
-      type: 'pageBody',
-      title: '🖋 Conteúdo da página',
+      type: 'homeBody',
+      title: '🖋 Conteúdo da home',
       validation: validation.array({
         min: 0
       })
@@ -30,10 +29,17 @@ export default {
   ],
   preview: {
     select: {
-      lang: 'lang'
+      id: '_id'
     },
-    prepare({ lang }) {
-      return { title: `Página inicial - ${getLangTitle(lang)}` }
+    prepare({ id }) {
+      // We might not have an id if the page isn't yet created
+      const lang = id ? id.split('-')[1] : ''
+      return {
+        // Only display the language's name in the preview if we have more than one lang in the website
+        title: `Página inicial ${
+          SITE_LANGUAGES.length > 1 ? getLangTitle(lang) : ''
+        }`
+      }
     }
   }
 }

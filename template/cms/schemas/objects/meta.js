@@ -1,5 +1,5 @@
-import { seoTitle, seoDescription, ogImage, scripts } from '../reusable/seo'
-import validation from '../reusable/validation'
+import { seoTitle, seoDescription, ogImage, scripts } from '../../utils/seo'
+import validation from '../../utils/validation'
 
 const homeMeta = {
   type: 'object',

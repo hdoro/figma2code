@@ -17,7 +17,7 @@ const config = {
   siteName: process.env.SITE_NAME,
   siteUrl: process.env.SITE_URL,
   brandPrimary: process.env.BRAND_PRIMARY,
-  useCache: true,
+  // useCache: true,
   cacheData: true
 }
 

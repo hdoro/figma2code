@@ -1,13 +1,13 @@
-import { getLangField, getLangTitle } from '../reusable/i18n'
+import { getLangField, getLangTitle } from '../../utils/i18n'
 
 export default {
   name: 'config',
   title: 'Configurações gerais',
   type: 'document',
-  __experimental_actions: ['update', 'publish'],
   fields: [
     getLangField({
       title: 'Configuração para qual língua?'
+      // @TODO: set to hidden and readOnly after creating config documents
       // hidden: true,
       // readOnly: true
     }),
@@ -24,17 +24,10 @@ export default {
       ]
     },
     {
-      name: 'fallbackOgImage',
-      title: '📸 Imagem para compartilhamento padrão',
-      description:
-        '⚡ Campo opcional mas altamente encorajado. Vai ser usada para o compartilhamento em redes sociais em páginas que não tiverem uma imagem customizada.',
-      type: 'image'
-    },
-    {
       name: 'fallbackSeoDescription',
       title: '🖋 Descrição "meta" padrão',
       description:
-        '⚡ Campo opcional mas altamente encorajado. Vai ser usada para o compartilhamento em redes sociais em páginas que não tiverem uma imagem customizada.',
+        '⚡ Campo opcional mas altamente encorajado. Vai ser aparecer no Google e no compartilhamento em redes sociais para páginas que não tiverem uma descrição customizada.',
       rows: 3,
       type: 'text'
     },
@@ -64,15 +57,22 @@ export default {
       name: 'blog',
       title: 'Informações sobre as páginas do blog',
       description: 'Não se aplicam a páginas de categoria',
-      type: 'listPageMeta'
+      type: 'listPageMeta',
+      options: { collapsible: true, collapsed: true }
     }
   ],
   preview: {
     select: {
-      lang: 'lang'
+      id: '_id'
     },
-    prepare({ lang }) {
-      return { title: `Configurações - ${getLangTitle(lang)}` }
+    prepare({ id }) {
+      const lang = id ? id.split('-')[1] : ''
+      return {
+        // Only display the language's name in the preview if we have more than one lang in the website
+        title: `Configurações ${
+          SITE_LANGUAGES.length > 1 ? getLangTitle(lang) : ''
+        }`
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import portableText from '../reusable/portableText'
+import portableText from '../../utils/portableText'
 
 export default {
   ...portableText({

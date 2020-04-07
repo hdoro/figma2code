@@ -1,5 +1,5 @@
 import { FiFile as icon } from 'react-icons/fi'
-import validation from '../reusable/validation'
+import validation from '../../utils/validation'
 
 export default {
   name: 'page',
@@ -30,7 +30,6 @@ export default {
   initialValue: {
     meta: {
       _type: 'pageMeta',
-      live: true,
       indexable: true
     }
   },

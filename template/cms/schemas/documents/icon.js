@@ -2,7 +2,7 @@ import React from 'react'
 import { FiHeart as icon } from 'react-icons/fi'
 
 import './iconPreview.css?raw'
-import validation from '../reusable/validation'
+import validation from '../../utils/validation'
 
 export default {
   name: 'icon',

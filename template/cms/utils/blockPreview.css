@@ -1,0 +1,39 @@
+.wrapper {
+}
+
+.header {
+  background: rgba(45, 156, 219, 0.2);
+  font-weight: 700;
+  color: #2d9cdb;
+  padding: 0.5em;
+}
+
+.header > svg {
+  margin-right: 0.25em;
+  vertical-align: middle;
+}
+
+.header > span {
+  display: block;
+  font-size: 0.8em;
+  margin-top: 0.25em;
+  font-weight: 400;
+  color: #222;
+}
+
+.component {
+  max-height: 25vh;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.component,
+.component img,
+.component pre {
+  max-width: 100%;
+}
+
+.component > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}

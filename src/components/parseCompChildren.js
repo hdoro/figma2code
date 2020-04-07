@@ -127,7 +127,7 @@ function parseCompChildren({
       }, DEFAULT_COMP_INFO)
     // If array, we only want to replicate one child instance
     if (isArray) {
-      const arrChild = childrenInfo.markup[0]
+      const arrChild = childrenInfo.markup[0] || {}
       childrenInfo.markup = [
         {
           ...arrChild,

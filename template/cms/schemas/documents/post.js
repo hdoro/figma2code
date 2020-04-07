@@ -1,5 +1,5 @@
 import { FiFileText as icon } from 'react-icons/fi'
-import validation from '../reusable/validation'
+import validation from '../../utils/validation'
 
 export default {
   name: 'post',
@@ -30,7 +30,6 @@ export default {
   initialValue: {
     meta: {
       _type: 'postMeta',
-      live: true,
       indexable: true
     }
   },

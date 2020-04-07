@@ -36,7 +36,7 @@ const labelFld = {
     })
 }
 
-const blockLink = {
+export const blockLink = {
   name: 'blockLink',
   type: 'object',
   title: 'Link',

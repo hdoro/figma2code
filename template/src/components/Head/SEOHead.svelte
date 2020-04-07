@@ -9,10 +9,8 @@
 
   const path = (meta.slug && meta.slug.current) || ''
   const { title, seoTitle, seoDescription } = meta
-  const ogImage = meta.ogImage || config.fallbackOgImage
+  const ogImage = meta.ogImage
   const ogType = path === '' ? 'Organization' : 'Website'
-
-  const lang = 'pt'
 
   const url = `${baseUrl}/${path}`
 </script>
@@ -49,13 +47,13 @@
   {/if}
 
   {@html getSchema({
+    ...config,
     type: path === '' ? 'Organization' : 'WebPage',
     url,
     title,
     image: ogImage,
     breadcrumbs:
-      meta.breadcrumbs && meta.breadcrumbs.include && meta.breadcrumbs.links,
-    socialMedia: config.socialMedia
+      meta.breadcrumbs && meta.breadcrumbs.include && meta.breadcrumbs.links
   })}
 
   {#each scripts.filter(s => s.type === 'headEnd') as { script }}

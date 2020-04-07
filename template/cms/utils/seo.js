@@ -20,7 +20,7 @@ export const seoDescription = {
   description:
     'Opcional mas altamente encorajado ⚡. Idealmente entre 40 e 200 caracteres',
   type: 'text',
-  rows: 3,,
+  rows: 3,
   validation: validation.text({
     optional: true,
     min: 30,

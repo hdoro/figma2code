@@ -1,4 +1,4 @@
-import { blockLink } from '../objects/links'
+import { blockLink } from '../schemas/objects/links'
 
 export const DEFAULT_DECORATORS = [
   { title: 'Strong', value: 'strong' },
