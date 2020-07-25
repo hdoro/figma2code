@@ -25,6 +25,8 @@ body[] {
 }
 `
 
+export const homeQuery = pageQuery
+
 export const configQuery = `
 ...
 `

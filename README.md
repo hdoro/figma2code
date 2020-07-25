@@ -50,4 +50,11 @@
 - line-heights in numbers instead of percentages (1.25 instead of 125)
 - Right now, if sass file is empty, the compiler will yell:
   `Unexpected token (Note that you need plugins to import files that are not JavaScript)`
-- default footer
+
+## Template
+
+- default footer & header
+- post body as fallback for its card description
+- socialMedia object for config
+- link & button
+- address in footer

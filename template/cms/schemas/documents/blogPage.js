@@ -33,7 +33,7 @@ export default {
   fields: [
     {
       name: 'meta',
-      type: 'listPageMeta',
+      type: 'blogPageMeta',
       title: 'ℹ Informações de SEO para as páginas do blog',
       description:
         '💡 As páginas do blog lista todos os posts do site, podendo ter uma ou mais páginas, dependendo da quantidade total. Essas informações se aplicam a todas elas.',

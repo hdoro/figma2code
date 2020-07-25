@@ -1,4 +1,4 @@
-import { FiHome } from 'react-icons/fi'
+import { FiHome as icon } from 'react-icons/fi'
 
 import { getLangTitle } from '../../utils/i18n'
 import validation from '../../utils/validation'
@@ -8,7 +8,7 @@ export default {
   name: 'home',
   type: 'document',
   title: 'Página Inicial',
-  icon: FiHome,
+  icon,
   fields: [
     {
       name: 'meta',
@@ -19,9 +19,15 @@ export default {
       }
     },
     {
+      name: 'hero',
+      title: 'Seção inicial (hero) 🐱‍👤',
+      type: 'homeHero',
+      validation: validation.default()
+    },
+    {
       name: 'body',
+      title: 'Seções do resto da página',
       type: 'homeBody',
-      title: '🖋 Conteúdo da home',
       validation: validation.array({
         min: 0
       })

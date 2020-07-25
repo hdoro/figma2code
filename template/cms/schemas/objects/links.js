@@ -1,5 +1,6 @@
-import { FiLink } from 'react-icons/fi'
-import { url } from '../../../src/utils/config'
+import { FaWhatsapp } from 'react-icons/fa'
+import { FiLink, FiExternalLink } from 'react-icons/fi'
+import validation from '../../utils/validation'
 
 const newWindowFld = {
   name: 'newWindow',
@@ -8,22 +9,37 @@ const newWindowFld = {
   type: 'boolean'
 }
 
-const urlFld = {
+const absUrlFld = {
   name: 'url',
-  title: 'Link / URL',
-  description: `Pode ser um link relativo (Ex: "sobre" levaria a ${url}/sobre) ou absoluto (Ex: https://kaordica.design)`,
+  title: 'Link / URL absoluta',
+  description: `💡 Se quiser direcionar a uma página do site, use um link interno! Copie a URL inteira ao invés de apenas o domínio (Ex: https://kaordica.design ao invés de www.kaordica.design)`,
   type: 'url',
   validation: Rule =>
     Rule.required()
       .uri({
-        allowRelative: true
+        allowRelative: false
       })
       .error('URL é obrigatória')
 }
 
+const pageLinkFld = {
+  name: 'pageLink',
+  title: 'Link para página no site',
+  description: `💡 busque a página por título. Se não encontrar, verifique se ela já foi publicada!`,
+  type: 'reference',
+  to: [
+    { type: 'home' },
+    { type: 'blogPage' },
+    { type: 'page' },
+    { type: 'post' },
+    { type: 'category' }
+  ],
+  validation: validation.default()
+}
+
 const labelFld = {
   name: 'label',
-  title: 'Título / rótulo do link',
+  title: 'Título ou rótulo do botão / link',
   type: 'string',
   validation: Rule =>
     Rule.custom((value, { parent }) => {
@@ -36,66 +52,47 @@ const labelFld = {
     })
 }
 
-export const blockLink = {
-  name: 'blockLink',
+export const blockAbsUrl = {
+  name: 'blockAbsUrl',
   type: 'object',
-  title: 'Link',
-  icon: FiLink,
-  fields: [urlFld, newWindowFld]
+  title: 'Link p/ outros sites',
+  icon: FiExternalLink,
+  fields: [absUrlFld, newWindowFld]
 }
 
-const navLink = {
-  name: 'navLink',
-  title: 'Link de navegação',
+export const blockPageLink = {
+  name: 'blockPageLink',
+  type: 'object',
+  title: 'Link interno',
+  icon: FiLink,
+  fields: [pageLinkFld, newWindowFld]
+}
+
+const ctaPageLink = {
+  name: 'ctaPageLink',
+  title: 'Link interno (p/ outra página)',
+  icon: FiLink,
+  type: 'object',
+  options: { collapsible: true },
+  fields: [labelFld, pageLinkFld, newWindowFld]
+}
+
+const ctaAbsUrl = {
+  name: 'ctaAbsUrl',
+  title: 'Link para outro site',
+  icon: FiExternalLink,
+  type: 'object',
+  options: { collapsible: true },
+  fields: [labelFld, absUrlFld, newWindowFld]
+}
+
+const ctaWhatsApp = {
+  name: 'ctaWhatsApp',
+  title: 'Link para o WhatsApp',
+  icon: FaWhatsapp,
   type: 'object',
   options: { collapsible: true },
   fields: [labelFld, newWindowFld]
 }
 
-const cta = {
-  name: 'cta',
-  title: 'Chamada para ação',
-  type: 'object',
-  options: { collapsible: true },
-  fields: [
-    labelFld,
-    newWindowFld,
-    {
-      ...urlFld,
-      validation: Rule => [
-        // Currently, Sanity has a bug in which it won't allow relatives in `uri` with a custom validation, so we're removing the URI validation for now (commented below)
-        /*
-        Rule.uri({
-          allowRelative: true,
-        }).error('Not a valid URL'),
-        */
-        Rule.custom((value, { parent }) => {
-          // Only error out if label is defined.
-          if (!!parent.label && !value) {
-            return 'URL é obrigatória'
-          }
-          return true
-        })
-      ],
-      // Because of the lack of `uri` validation, we can't use type `url` or else it'll always fail for internal links
-      type: 'string'
-    }
-  ]
-}
-
-const ctaCaption = {
-  ...cta,
-  name: 'ctaCaption',
-  title: 'Chamada para ação com legenda opcional',
-  fields: [
-    ...cta.fields,
-    {
-      name: 'caption',
-      title: 'Legenda abaixo do botão / link',
-      type: 'string',
-      description: '❓ Campo opcional'
-    }
-  ]
-}
-
-export default [blockLink, navLink, cta, ctaCaption]
+export default [blockAbsUrl, blockPageLink, ctaPageLink, ctaAbsUrl, ctaWhatsApp]

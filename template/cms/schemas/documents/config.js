@@ -52,13 +52,6 @@ export default {
           type: 'navLink'
         }
       ]
-    },
-    {
-      name: 'blog',
-      title: 'Informações sobre as páginas do blog',
-      description: 'Não se aplicam a páginas de categoria',
-      type: 'listPageMeta',
-      options: { collapsible: true, collapsed: true }
     }
   ],
   preview: {

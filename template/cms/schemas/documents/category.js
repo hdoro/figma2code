@@ -9,20 +9,11 @@ export default {
   title: 'Categoria',
   fields: [
     {
-      name: 'slug',
-      type: 'slug',
-      title: 'Endereço relativo da categoria',
-      description:
-        'É adicionado depois de /blog. Ex: midias-sociais se tornaria /blog/midias-sociais 😉',
-      source: 'meta.title',
-      validation: validation.default()
-    },
-    {
       name: 'meta',
-      title: 'ℹ Informações de SEO para as páginas do blog',
+      title: 'ℹ Informações de SEO para as páginas dessa categoria',
       description:
         '💡 Cada categoria tem uma ou mais páginas listando seus posts, dependendo da quantidade total. Essas informações se aplicam a todas elas.',
-      type: 'listPageMeta'
+      type: 'categoryPageMeta'
     },
     ...LIST_PAGE_FIELDS.map(fld => {
       if (fld.name === 'title') {

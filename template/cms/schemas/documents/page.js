@@ -17,14 +17,16 @@ export default {
       }
     },
     {
+      name: 'hero',
+      title: '🐱‍👤 Seção inicial da página (hero )',
+      type: 'pageHero',
+      options: { collapsible: true, collapsed: false },
+      validation: validation.default()
+    },
+    {
       name: 'body',
       type: 'pageBody',
-      title: '🖋 Conteúdo da página',
-      validation: validation.array({
-        min: 0,
-        errMsg:
-          'Campo obrigatório. Como pretende postar uma página sem conteúdo? 🤣'
-      })
+      title: '🖋 Conteúdo da página'
     }
   ],
   initialValue: {
