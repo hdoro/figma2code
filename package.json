@@ -19,6 +19,6 @@
     "prettier-plugin-svelte": "^0.7.0",
     "stylelint": "^13.0.0",
     "stylelint-config-recommended": "^3.0.0",
-    "svelte": "^3.16.0"
+    "svelte": "^3.49.0"
   }
 }
